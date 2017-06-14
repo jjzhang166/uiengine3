@@ -1,0 +1,22 @@
+﻿  stdafx.cpp
+  Tool.cpp
+f:\visual-studio-liushiyin\gamemapediter\uiengine\tool.cpp(26): warning C4018: “<”: 有符号/无符号不匹配
+  cTriangle.cpp
+  cText.cpp
+  cRectangle.cpp
+  cPolygon.cpp
+  cPicture.cpp
+  cMyTimer.cpp
+  cLine.cpp
+  cGameEngine.cpp
+  cCircle.cpp
+  cButton.cpp
+  cBaseUI.cpp
+  cAmination.cpp
+  正在生成代码...
+f:\visual-studio-liushiyin\gamemapediter\uiengine\cpolygon.cpp(41): warning C4700: 使用了未初始化的局部变量“rect”
+f:\visual-studio-liushiyin\gamemapediter\uiengine\ctext.cpp(239): warning C4700: 使用了未初始化的局部变量“rect”
+f:\visual-studio-liushiyin\gamemapediter\uiengine\ctext.cpp(98): warning C4172: 返回局部变量或临时变量的地址
+f:\visual-studio-liushiyin\gamemapediter\uiengine\ctriangle.cpp(137): warning C4700: 使用了未初始化的局部变量“rect”
+f:\visual-studio-liushiyin\gamemapediter\uiengine\tool.cpp(20): warning C4715: “MoveToCenter”: 不是所有的控件路径都返回值
+  UiEngine.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\UiEngine.lib
