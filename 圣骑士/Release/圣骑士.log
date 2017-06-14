@@ -1,0 +1,9 @@
+﻿  cGameController.cpp
+cGameController.cpp(93): warning C4060: switch 语句没有包含“case”或“default”标签
+  圣骑士.cpp
+  正在生成代码
+  32 of 869 functions ( 3.7%) were compiled, the rest were copied from previous compilation.
+    16 functions were new in current compilation
+    21 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  圣骑士.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Release\圣骑士.exe
