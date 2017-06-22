@@ -1,8 +1,9 @@
 #pragma once
 #include"cMusicPlayer.h"
-#include"../UIEngine/cGameEngine.h"
+#include<cGameEngine.h>
 #include"cMap.h"
 #include<map>
+#include"cPlayer.h"
 
 using namespace MyEngine;
 
@@ -76,41 +77,13 @@ public:
 	void StartGame(const HWND& hWnd);
 
 	/*
-	*LButtonDown()
-	*
-	*鼠标坐标按下
-	*/
-	void LButtonDown();
-
-	/*
-	*LButtonUp()
-	*
-	*鼠标左键弹起
-	*/
-	void LButtonUp();
-
-	/*
-	*RButtonDown()
-	*
-	*鼠标右键按下
-	*/
-	void RButtonDown();
-
-	/*
-	*RButtonUp()
-	*
-	*鼠标右键弹起
-	*/
-	void RButtonUp();
-
-	/*
 	*KeyDown(LPARAM lParam)
 	*
 	*键盘按下消息
 	*@Param:
-	*	LPARAM lParam:事件详细信息
+	*	WPARAM wParam:事件详细信息
 	*/
-	void KeyDown(LPARAM lParam);
+	void KeyDown(WPARAM wParam);
 
 	/*
 	*KeyUp(LPARAM wParam)
@@ -118,9 +91,9 @@ public:
 	*键盘弹起消息
 	*
 	*@Param：
-	*	LPARAM lParam：事件详细信息
+	*	WPARAM wParam：事件详细信息
 	*/
-	void KeyUp(LPARAM lParam);
+	void KeyUp(WPARAM wParam);
 
 	/*
 	GetUIEngine()
@@ -161,6 +134,28 @@ public:
 		MapScene scene：要加载的地图场景
 	*/
 	bool LoadMap(MapScene scene);
+
+	/*
+	CreatePlayer(Mapscene scene)
+	创造一个玩家
+	@Param :
+		MapScene scene:地图场景
+	@return cPlayer*:
+		玩家对象指针
+	*/
+	cPlayer* CreatePlayer(MapScene scene);
+
+	/*
+	CanGo(tagPOINT pt,Dir_Type dir)
+	判断玩家当前是否可以移动
+	@Param：
+		tagPOINT pt：玩家当前位置
+		Dir_Type dir:移动方向
+	@return bool：
+		true：可以移动
+		false：不可以移动
+	*/
+	bool CanGo(const tagPOINT& pt, Dir_Type dir);
 private:
 	/*
 	ReleaseLastViewResource(const EntryStatus& status);
@@ -206,5 +201,12 @@ private:
 
 	//保存地图资源列表
 	std::map<RowRankInfo, cBaseUI*> m_MapResource;
+
+	//出生点
+	tagPOINT m_BornSite;
+
+	cPlayer *m_Player;
+
+	tagPOINT m_DoorSite;
 };
 

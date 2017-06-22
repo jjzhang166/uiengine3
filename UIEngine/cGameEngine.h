@@ -210,6 +210,26 @@ namespace MyEngine
 		cAmination *CreateAmination(const std::initializer_list<LPWSTR>& pathList, const int &x, const int& y, const int& w= 0, const int& h = 0);
 
 		/*
+		CreateAmination(const LPWSTR& Name,const int& smallRow,const int& smallRank,const int& w = 0,const int h = 0);
+		一整张大图创建一个动画
+		@Param：
+			LPWSTR Name：图片路径
+			int smallrow：小图行数
+			int smallRank：小图列数
+		*/
+		cAmination* CreateAmination(const LPWSTR& Name,const int& smallRow,const int& smallRank,const int& w = 0,const int h = 0);
+
+		/*
+		CreateAmination(const LPWSTR& Name,const int& smallRow,const int& smallRank,const int& w = 0,const int h = 0);
+		一整张大图创建一个动画
+		@Param：
+			HBITMAP hbitmap：位图资源句柄
+			int smallrow：小图行数
+			int smallRank：小图列数
+		*/
+		cAmination* CreateAmination(const HBITMAP& hbitmap, const int& smallrow, const int& smallrank);
+
+		/*
 		AddEventToUI(const cBaseUI* ui,UINT_PTR eventIdCallEventBack callBack)
 		为UI控件添加事件处理函数
 		@Param：

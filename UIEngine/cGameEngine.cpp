@@ -227,6 +227,20 @@ cAmination * MyEngine::cGameEngine::CreateAmination(const std::initializer_list<
 	return pAmi;
 }
 
+cAmination * MyEngine::cGameEngine::CreateAmination(const LPWSTR & Name, const int & smallRow, const int & smallRank, const int & w, const int h)
+{
+	cAmination* pAmi = new cAmination(Name, smallRow, smallRank, w, h);
+	m_uiList.push_back(pAmi);
+	return pAmi;
+}
+
+cAmination * MyEngine::cGameEngine::CreateAmination(const HBITMAP & hbitmap, const int & smallrow, const int & smallrank)
+{
+	cAmination* pAmi = new cAmination(hbitmap, smallrow, smallrank);
+	m_uiList.push_back(pAmi);
+	return pAmi;
+}
+
 void MyEngine::cGameEngine::AddEventToUi(cBaseUI * ui, UINT_PTR eventId, CallEeventBack callBack,void* Param)
 {
 	UI_Event uiEvent;
@@ -239,11 +253,11 @@ void MyEngine::cGameEngine::AddEventToUi(cBaseUI * ui, UINT_PTR eventId, CallEev
 
 int MyEngine::cGameEngine::DeleteUI(cBaseUI * pDel)
 {
-	DeleteEvent(pDel);
 	for (auto it = m_uiList.begin(); it != m_uiList.end(); ++it)
 	{
 		if (pDel == *it)
 		{
+			DeleteEvent(pDel);
 			m_uiList.erase(it);
 			delete pDel;
 			pDel = nullptr;
@@ -275,8 +289,8 @@ int MyEngine::cGameEngine::QuickDeleteUIs(std::list<cBaseUI*> pDelList)
 	{
 		if (*it == *pDelCur)
 		{
-			it = m_uiList.erase(it);
 			DeleteEvent(*pDelCur);
+			it = m_uiList.erase(it);
 			delete *pDelCur;
 			*pDelCur = nullptr;
 			++pDelCur;

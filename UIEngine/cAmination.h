@@ -17,6 +17,28 @@ namespace MyEngine
 		cAmination();
 
 		/*
+		有参构造函数
+		用一张图片初始化动画
+		@Param：
+			LPWSTR name:图片路径名
+			int smallRow：小图行数
+			int smallRank：小图列数
+			int w：动画宽度
+			int h：动画高度
+		*/
+		cAmination(const LPWSTR& Name,const int& smallRow,const int& smallRank,const int& w = 0, const int& h = 0);
+
+		/* 
+		有参构造函数
+		用一张图片初始化动画
+		@Param：
+			HBITMAP hbitmap:位图句柄
+			int smallRow：小图行数
+			int smallRank：小图列数
+	    */
+		cAmination(HBITMAP hbitmap, const int& smallRow, const int& smallRank);
+
+		/*
 		构造函数，初始化的动画资源，并自定其宽度和高度也可以使用图片本身默认宽高
 		@Param：
 			std::initializer_list<LPWSTR> initList:动画资源路径列表
@@ -105,8 +127,10 @@ namespace MyEngine
 		/*
 		IncCurFrame()
 		自增当前帧
+		@Param:
+			int curFrame:设置当前帧
 		*/
-		void IncFrame();
+		void IncFrame(const int& curFrame = 0);
 
 		/*
 		SetAutoRun(const BOOL& b)
@@ -121,6 +145,31 @@ namespace MyEngine
 		是否自动播放
 		*/
 		const BOOL& IsAutoRun() const;
+
+		/*
+		SetSmallRowAndRank(const int& row,const int& rank)
+		设置当动画都在一张图片上时指定小图的行列数
+		@Param:
+			int row：小图行数
+			int rank：小图列数
+		*/
+		void SetSmallRowAndRank(const int& row, const int& rank);
+
+		/*
+		SetCurFrame(const int& curFrame);
+		设置当前帧,一般不需要用到除非有特殊需求
+		@Param: 
+			int curFrame;
+		*/
+		void  SetCurFrame(const int& curFrame);
+
+		/*
+		GetCurFrame()
+		获取当前帧
+		@return int:
+			当前帧
+		*/
+		const int& GetCurFrame() const;
 	private:
 		/*
 		SetAmiConfig()
@@ -151,5 +200,14 @@ namespace MyEngine
 		unsigned m_curFrame;
 
 		BOOL m_isAutoRun;
+
+		//指定是否只有一张图
+		BOOL m_isOne;
+
+		//当只有一张图片时小图行数
+		int m_smallRow;
+
+		//当只有一张图片时小图列数
+		int m_smallRank;
 	};
 }

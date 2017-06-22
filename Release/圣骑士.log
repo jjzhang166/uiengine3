@@ -1,0 +1,14 @@
+﻿  stdafx.cpp
+  cEyes.cpp
+  cGameController.cpp
+cGameController.cpp(62): error C2660: “MyEngine::cGameEngine::CenterWindow”: 函数不接受 2 个参数
+cGameController.cpp(93): warning C4060: switch 语句没有包含“case”或“default”标签
+  cMap.cpp
+cMap.cpp(54): warning C4018: “<”: 有符号/无符号不匹配
+cMap.cpp(56): warning C4018: “<”: 有符号/无符号不匹配
+cMap.cpp(80): warning C4018: “<”: 有符号/无符号不匹配
+cMap.cpp(97): warning C4018: “<”: 有符号/无符号不匹配
+  cMusicPlayer.cpp
+cMusicPlayer.cpp(214): warning C4244: “=”: 从“double”转换到“DWORD”，可能丢失数据
+  cPlayer.cpp
+  圣骑士.cpp

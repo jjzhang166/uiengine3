@@ -71,8 +71,8 @@ BOOL cMapEditer::SetRowAndRabk(const int & row, const int & rank,const int& terr
 		return FALSE;
 	}
 	deleteMapInfo();
-	m_Ui.QuickDeleteUIs(m_splitLine);
-	m_Ui.QuickDeleteUIs(m_terrianRect);
+	m_Ui.DeleteUIs(m_splitLine);
+	m_Ui.DeleteUIs(m_terrianRect);
 	m_splitLine.clear();
 	m_terrianRect.clear();
 	m_row = row;

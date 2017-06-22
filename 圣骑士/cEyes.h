@@ -8,6 +8,15 @@ enum Eyes_Type
 	Tyep_Monster,
 };
 
+enum Dir_Type
+{
+	Dir_Left,
+	Dir_Right,
+	Dir_Up,
+	Dir_Down,
+};
+
+
 class cEyes
 {
 public:
@@ -49,7 +58,7 @@ public:
 	*@return int:
 	* 由子类来决定如何返回
 	*/
-	virtual int move() = 0;
+	virtual int move(Dir_Type dir,bool b) = 0;
 
 	/*
 	*SetLife(const int& life);

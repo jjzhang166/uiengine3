@@ -42,12 +42,18 @@ cGameController::cGameController()
 	m_IsOpenMusic = true;
 	m_gameVolume = 500;
 	m_pUI = NULL;
+	m_Player = nullptr;
 }
 
 cGameController::~cGameController()
 {
 	delete m_pUI;
 	m_pUI = nullptr;
+	if (m_Player != nullptr)
+	{
+		delete m_Player;
+		m_Player = nullptr;
+	}
 }
 
 int cGameController::OnTimer(int id, int iParam, string str)
@@ -64,36 +70,38 @@ void cGameController::StartGame(const HWND & hWnd)
 	EntrySelectView(Null_Entry);
 }
 
-void cGameController::LButtonDown()
+void cGameController::KeyDown(WPARAM wParam)
 {
-
-}
-
-void cGameController::LButtonUp()
-{
-
-}
-
-void cGameController::RButtonDown()
-{
-
-}
-
-void cGameController::RButtonUp()
-{
-	
-}
-
-void cGameController::KeyDown(LPARAM lParam)
-{
-	KBDLLHOOKSTRUCT* pkhst = (KBDLLHOOKSTRUCT*)lParam;
-	switch (pkhst->vkCode)
+	switch (LOWORD(wParam))
 	{
-
+	case UVK_UP:
+		if (m_Player->GetPos().y > 0)
+		{
+			m_Player->move(Dir_Up, CanGo(m_Player->GetPos(), Dir_Up));
+		}
+		break;
+	case UVK_LEFT:
+		if (m_Player->GetPos().x > 0)
+		{
+			m_Player->move(Dir_Left,CanGo(m_Player->GetPos(), Dir_Left));
+		}
+		break;
+	case UVK_DOWN:
+		if (m_Player->GetPos().y < CLIENTY-50)
+		{
+			m_Player->move(Dir_Down, CanGo(m_Player->GetPos(), Dir_Down));
+		}
+		break;
+	case UVK_RIGHT:
+		if (m_Player->GetPos().x < CLIENTX-50)
+		{
+			m_Player->move(Dir_Right, CanGo(m_Player->GetPos(), Dir_Right));
+		}
+		break;
 	}
 }
 
-void cGameController::KeyUp(LPARAM lParam)
+void cGameController::KeyUp(WPARAM wParam)
 {
 }
 
@@ -109,6 +117,7 @@ void cGameController::EntryGame(EntryStatus entry)
 	{
 		MessageBox(NULL, L"¼ÓÔØµØÍ¼Ê§°Ü", L"", MB_OK);
 	}
+	m_Player = CreatePlayer(Map_Censorship1);
 }
 
 void cGameController::EntrySelectView(EntryStatus entry)
@@ -162,6 +171,10 @@ bool cGameController::LoadMap(MapScene scene)
 	switch (scene)
 	{
 	case Map_Censorship1:
+		m_BornSite.x = 0;
+		m_BornSite.y = 0;
+		m_DoorSite.x = CLIENTX - 50;
+		m_DoorSite.y = CLIENTY - 50;
 		bRet=m_mapInfo.LoadMapFromFile("Map1.txt");
 		break;
 	case Map_Censorship2:
@@ -187,6 +200,97 @@ bool cGameController::LoadMap(MapScene scene)
 	}
 	CreateMapResource();
 	return bRet;
+}
+
+cPlayer* cGameController::CreatePlayer(MapScene scene)
+{
+	switch (scene)
+	{
+	case Map_Censorship1:
+	{
+		m_BornSite.x = 0;
+		m_BornSite.y = 0;
+		cPlayer* pPlayer = new cPlayer;
+		pPlayer->SetPos(m_BornSite);
+		pPlayer->SetLife(5);
+		pPlayer->SetSpeed(5);
+		cAmination* pAmi = m_pUI->CreateAmination(L"images/knight.bmp", 4, 4, 200, 200);
+		pAmi->SetX(m_BornSite.x);
+		pAmi->SetY(m_BornSite.y);
+		pAmi->SetAutoRun(false);
+		pAmi->SetIsLucnecy(true);
+		pAmi->SetLucnecyColor(RGB(128, 128, 128));
+		pPlayer->SetcorrelationAmnation(pAmi);
+		return pPlayer;
+	}
+	case Map_Censorship2:
+		break;
+	case Map_Censorship3:
+		break;
+	case Map_Censorship4:
+		break;
+	default:
+		break;
+	}
+	return nullptr;
+}
+
+bool cGameController::CanGo(const tagPOINT & pt, Dir_Type dir)
+{
+	int rank = 0;
+	int row = 0;
+	switch (dir)
+	{
+	case Dir_Left:
+	{
+		rank = (pt.x) / 50;
+		row = (pt.y + 40) / 50;
+	}
+		break;
+	case Dir_Right:
+	{
+		rank = (pt.x) / 50 + 1;
+		row = (pt.y + 40) / 50;
+	}
+		break;
+	case Dir_Up:
+	{
+		rank = (pt.x + 25) / 50;
+		row = (pt.y) / 50;
+		if (m_mapInfo.at(row, rank - 1) != Type_Null)
+		{
+			rank = (pt.x + 15) / 50;
+		}
+		else if (m_mapInfo.at(row, rank + 1) != Type_Null)
+		{
+			rank = (pt.x + 35) / 50;
+		}
+	}
+		break;
+	case Dir_Down:
+	{
+		rank = (pt.x + 25) / 50;
+		row = (pt.y) / 50 + 1;
+		if (m_mapInfo.at(row, rank - 1) != Type_Null)
+		{
+			rank = (pt.x + 15) / 50;
+		}
+		else if (m_mapInfo.at(row, rank + 1) != Type_Null)
+		{
+			rank = (pt.x + 35) / 50;
+		}
+	}
+		break;
+	default:
+		break;
+	}
+	if (m_mapInfo.at(row, rank) == Type_Null
+		||m_mapInfo.at(row,rank)==Type_Door||
+		m_mapInfo.at(row, rank) == Type_Born)
+	{
+		return true;
+	}
+	return false;
 }
 
 bool cGameController::ReleaseLastViewResource(const EntryStatus & status)

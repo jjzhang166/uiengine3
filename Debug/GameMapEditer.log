@@ -1,0 +1,9 @@
+﻿  GameMapEditer.cpp
+  正在生成代码...
+  正在编译...
+  cMapEditer.cpp
+f:\visual-studio-liushiyin\gamemapediter\gamemapediter\cmapediter.cpp(82): warning C4018: “<”: 有符号/无符号不匹配
+f:\visual-studio-liushiyin\gamemapediter\gamemapediter\cmapediter.cpp(218): warning C4018: “<”: 有符号/无符号不匹配
+  正在生成代码...
+  GameMapEditer.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\GameMapEditer.exe
+  GameMapEditer.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\GameMapEditer.pdb (Partial PDB)

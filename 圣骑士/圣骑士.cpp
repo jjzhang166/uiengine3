@@ -132,16 +132,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_KEYUP:
-		g_pGameController->KeyUp(lParam);
+		g_pGameController->KeyUp(wParam);
 		break;
 	case WM_KEYDOWN:
-		g_pGameController->KeyDown(lParam);
-		break;
-	case WM_LBUTTONUP:
-		g_pGameController->LButtonUp();
-		break;
-	case WM_LBUTTONDOWN:
-		g_pGameController->LButtonDown();
+		g_pGameController->KeyDown(wParam);
 		break;
 	case WM_COMMAND:
 	{

@@ -45,10 +45,10 @@
     <ClInclude Include="cPlayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
+    <ClInclude Include="cMonster.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="cMonster.h">
+    <ClInclude Include="resource1.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
