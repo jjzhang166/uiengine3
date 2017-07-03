@@ -144,6 +144,11 @@
     <ClInclude Include="cGameController.h" />
     <ClInclude Include="cMap.h" />
     <ClInclude Include="cMonster.h" />
+    <ClInclude Include="cMonsterAma.h" />
+    <ClInclude Include="cMonsterBull.h" />
+    <ClInclude Include="cMonsterCreater.h" />
+    <ClInclude Include="cMonsterQiu.h" />
+    <ClInclude Include="cMonsterStar.h" />
     <ClInclude Include="cMusicPlayer.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="Resource.h" />
@@ -157,6 +162,11 @@
     <ClCompile Include="cGameController.cpp" />
     <ClCompile Include="cMap.cpp" />
     <ClCompile Include="cMonster.cpp" />
+    <ClCompile Include="cMonsterAma.cpp" />
+    <ClCompile Include="cMonsterBull.cpp" />
+    <ClCompile Include="cMonsterCreater.cpp" />
+    <ClCompile Include="cMonsterQiu.cpp" />
+    <ClCompile Include="cMonsterStar.cpp" />
     <ClCompile Include="cMusicPlayer.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="stdafx.cpp">

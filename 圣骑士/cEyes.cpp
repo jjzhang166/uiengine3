@@ -80,3 +80,8 @@ const Eyes_Type & cEyes::GetType()
 {
 	return m_type;
 }
+
+const Dir_Type & cEyes::GetDir() const
+{
+	return m_dir;
+}

@@ -51,6 +51,21 @@
     <ClInclude Include="resource1.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="cMonsterStar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cMonsterBull.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cMonsterQiu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cMonsterAma.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cMonsterCreater.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,6 +90,21 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="cMonster.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cMonsterStar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cMonsterBull.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cMonsterQiu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cMonsterAma.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cMonsterCreater.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

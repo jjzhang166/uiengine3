@@ -153,6 +153,14 @@ public:
 	*	自身类型
 	*/
 	virtual const Eyes_Type& GetType();
+
+	/*
+	GetDir()
+	获取方向
+	@return Dir_Type：
+		物体方向
+	*/
+	virtual const Dir_Type& GetDir() const;
 protected:
 	//当前位置
 	tagPOINT m_pos;
@@ -167,5 +175,7 @@ protected:
 	unsigned m_maxFps;
 
 	Eyes_Type m_type;
+
+	Dir_Type m_dir;
 };
 

@@ -56,7 +56,7 @@ public:
 	@return Dir_Type：
 		人物方向
 	*/
-	const Dir_Type& GetDir() const;
+	const Dir_Type& GetDir() const override;
 private:
 	/*
 	SetDir(Dir_Type dir)
@@ -67,8 +67,6 @@ private:
 	void SetDir(const Dir_Type& dir);
 
 	int m_speed;
-
-	Dir_Type m_dir;
 
 	MyEngine::cAmination* m_correlationAmnation;
 };

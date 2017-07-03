@@ -114,5 +114,6 @@ const Dir_Type & cPlayer::GetDir() const
 
 void cPlayer::SetDir(const Dir_Type & dir)
 {
+	m_dir = dir;
 }
 

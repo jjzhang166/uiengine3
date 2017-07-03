@@ -8,6 +8,8 @@
 #pragma comment(lib,"../Release/UiEngine.lib")
 #endif // _DEBUG
 
+#define Base_Speed 5
+
 void quitBtnProc(void* Param)
 {
 	PostQuitMessage(0);
@@ -43,6 +45,9 @@ cGameController::cGameController()
 	m_gameVolume = 500;
 	m_pUI = NULL;
 	m_Player = nullptr;
+	AddTimer(1, 50);
+	m_pressTimes = 0;
+	m_delayWalk = 0;
 }
 
 cGameController::~cGameController()
@@ -58,6 +63,7 @@ cGameController::~cGameController()
 
 int cGameController::OnTimer(int id, int iParam, string str)
 {
+	m_delayWalk == 0 ? m_pressTimes = 0 : --m_delayWalk;
 	return 1;
 }
 
@@ -72,29 +78,49 @@ void cGameController::StartGame(const HWND & hWnd)
 
 void cGameController::KeyDown(WPARAM wParam)
 {
+	if (m_delayWalk == 0)
+	{
+		m_delayWalk = 2;
+	}
 	switch (LOWORD(wParam))
 	{
 	case UVK_UP:
 		if (m_Player->GetPos().y > 0)
 		{
+			if (m_pressTimes >0 && m_Player->GetDir() == Dir_Up)
+			{
+				m_Player->SetSpeed(Base_Speed * 2);
+			}
 			m_Player->move(Dir_Up, CanGo(m_Player->GetPos(), Dir_Up));
 		}
 		break;
 	case UVK_LEFT:
 		if (m_Player->GetPos().x > 0)
 		{
+			if (m_pressTimes >0 && m_Player->GetDir() == Dir_Left)
+			{
+				m_Player->SetSpeed(Base_Speed * 2);
+			}
 			m_Player->move(Dir_Left,CanGo(m_Player->GetPos(), Dir_Left));
 		}
 		break;
 	case UVK_DOWN:
 		if (m_Player->GetPos().y < CLIENTY-50)
 		{
+			if (m_pressTimes >0 && m_Player->GetDir() == Dir_Down)
+			{
+				m_Player->SetSpeed(Base_Speed * 2);
+			}
 			m_Player->move(Dir_Down, CanGo(m_Player->GetPos(), Dir_Down));
 		}
 		break;
 	case UVK_RIGHT:
 		if (m_Player->GetPos().x < CLIENTX-50)
 		{
+			if (m_pressTimes >0&& m_Player->GetDir() == Dir_Right)
+			{
+				m_Player->SetSpeed(Base_Speed * 2);
+			}
 			m_Player->move(Dir_Right, CanGo(m_Player->GetPos(), Dir_Right));
 		}
 		break;
@@ -103,6 +129,11 @@ void cGameController::KeyDown(WPARAM wParam)
 
 void cGameController::KeyUp(WPARAM wParam)
 {
+	m_Player->SetSpeed(Base_Speed);
+	if (m_delayWalk > 0)
+	{
+		++m_pressTimes;
+	}
 }
 
 cGameEngine * cGameController::GetUIEngine()
@@ -175,7 +206,7 @@ bool cGameController::LoadMap(MapScene scene)
 		m_BornSite.y = 0;
 		m_DoorSite.x = CLIENTX - 50;
 		m_DoorSite.y = CLIENTY - 50;
-		bRet=m_mapInfo.LoadMapFromFile("Map1.txt");
+		bRet=m_mapInfo.LoadMapFromFile("Map2.txt");
 		break;
 	case Map_Censorship2:
 		bRet=m_mapInfo.LoadMapFromFile("");
@@ -213,7 +244,7 @@ cPlayer* cGameController::CreatePlayer(MapScene scene)
 		cPlayer* pPlayer = new cPlayer;
 		pPlayer->SetPos(m_BornSite);
 		pPlayer->SetLife(5);
-		pPlayer->SetSpeed(5);
+		pPlayer->SetSpeed(Base_Speed);
 		cAmination* pAmi = m_pUI->CreateAmination(L"images/knight.bmp", 4, 4, 200, 200);
 		pAmi->SetX(m_BornSite.x);
 		pAmi->SetY(m_BornSite.y);

@@ -208,5 +208,9 @@ private:
 	cPlayer *m_Player;
 
 	tagPOINT m_DoorSite;
+
+	int m_delayWalk;
+
+	int m_pressTimes;
 };
 
