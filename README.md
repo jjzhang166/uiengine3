@@ -1,5 +1,7 @@
 C++编写的简单UI引擎，方便开发windows界面程序,附件中含有用此UI引擎开发的游戏地图编辑器和一个冒险小游戏（该游戏暂时还未做完）。
 项目附件中有地图编辑器和冒险小游戏64位可执行文件。```
+这里输入代码
+```
 此UI引擎是对win32API的一个封装非常适合对win32API不熟悉但又需要使用win32API编程的开发使用。
 
 class cGameEngine是引擎类其主要负责对UI界面的管理，通过这个类可以在界面上创建各种UI元素，并管理UI元素。
@@ -71,4 +73,3 @@ cTriangle
 三角形元素继承自cBaseU
 */
 class cTriangle:public cBaseUI
-```
