@@ -28,7 +28,7 @@ class cMyTimer
 {
 public:
 	cMyTimer();
-	~cMyTimer();
+	virtual ~cMyTimer();
 	//Ìí¼Ó¶¨Ê±Æ÷
 	void AddTimer(unsigned timeId,unsigned timeElapse,int param = 0,char* p = NULL);
 

@@ -52,16 +52,6 @@ int WcharArrayChineseNums(const LPWSTR& str);
 */
 WndBount GetWindowBount(HWND hWnd);
 
-/*
-*DeleteHGDIOBJS(std::initializer_list<HGDIOBJ> hgdiobjList)
-*
-*删除大量GDI对象句柄
-*
-*@Param
-*	std::initializer_list<HGDIOBJ> hgdiobjList：GDI对象句柄列表
-*/
-//BOOL DeleteHGDIOBJS(initializer_list<HGDIOBJ> hgdiobjList);
-
 /********************************************************************************
 ************************键盘鼠标所有虚拟键键值宏定义****************************
 **************************BEGIN*************************************************

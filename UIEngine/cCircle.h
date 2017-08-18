@@ -30,7 +30,7 @@ namespace MyEngine
 		*/
 		explicit cCircle(const RECT& rect);
 
-		~cCircle();
+		virtual ~cCircle();
 
 		/*
 		SetCircleArea()

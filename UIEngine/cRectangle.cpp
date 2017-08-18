@@ -83,6 +83,7 @@ int MyEngine::cRectangle::GetHeight() const
 void MyEngine::cRectangle::SetLineColor(const UINT & rgb)
 {
 	m_lineColor = rgb;
+	DeleteObject(m_hPen);
 	m_hPen = CreatePen(m_lineStyle, m_Linewidth, m_lineColor);
 }
 
@@ -96,6 +97,7 @@ void MyEngine::cRectangle::SetIsFill(const bool & ok)
 	m_isFill = ok;
 	if (!m_isFill)
 	{
+		DeleteObject(m_hBrush);
 		m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 	}
 }
@@ -108,6 +110,7 @@ const bool & MyEngine::cRectangle::isFIll() const
 void MyEngine::cRectangle::SetFillColor(const UINT & rgb)
 {
 	m_fillColor = rgb;
+	DeleteObject(m_hBrush);
 	m_hBrush = CreateSolidBrush(m_fillColor);
 }
 
@@ -119,6 +122,7 @@ const UINT & MyEngine::cRectangle::GetFillColor() const
 void MyEngine::cRectangle::SetLineStyle(const UINT & style)
 {
 	m_lineStyle = style;
+	DeleteObject(m_hPen);
 	m_hPen = CreatePen(m_lineStyle, m_Linewidth, m_lineColor);
 }
 

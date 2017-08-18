@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "cPicture.h"
+#include"cResourcePool.h"
 #include<iostream>
 #include<mmsystem.h>
 using namespace MyEngine;
@@ -33,10 +34,19 @@ cPicture::cPicture(const LPWSTR& name,int x,int y)
 	m_lucencyRgb = RGB(0, 0, 0);
 }
 
+MyEngine::cPicture::cPicture(const std::string key)
+{
+	m_type = UI_Picture;
+	m_isUsePool = TRUE;
+	m_hBitmap = (HBITMAP)cResourcePool::GetResourcePool()->GethObjByKey(key);
+	SetPicConfig();
+	m_isLucency = FALSE;
+	m_lucencyRgb = RGB(0, 0, 0);
+}
 
 cPicture::~cPicture()
 {
-	m_hBitmap ? DeleteObject(m_hBitmap) : 1;
+	m_hBitmap&&!m_isUsePool? DeleteObject(m_hBitmap) : 1;
 }
 
 const RECT cPicture::GetRect() const
@@ -71,14 +81,26 @@ bool cPicture::Draw(HDC hDc)
 
 void cPicture::SetBitmap(const HBITMAP & hBitmap)
 {
+	!m_isUsePool ? DeleteObject(m_hBitmap) : 1;
 	m_hBitmap= hBitmap;
 	SetPicConfig();
+	m_isUsePool = FALSE;
 }
 
 void cPicture::SetBitmap(const LPWSTR & name,int  x,int  y)
 {
+	!m_isUsePool ? DeleteObject(m_hBitmap) : 1;
 	m_hBitmap = (HBITMAP)LoadImage(NULL, name, IMAGE_BITMAP, x, y, LR_LOADFROMFILE);
 	SetPicConfig();
+	m_isUsePool = FALSE;
+}
+
+void MyEngine::cPicture::SetBitmapByKey(std::string key)
+{
+	!m_isUsePool ? DeleteObject(m_hBitmap) :1;
+	m_hBitmap = (HBITMAP)cResourcePool::GetResourcePool()->GethObjByKey(key);
+	SetPicConfig();
+	m_isUsePool = TRUE;
 }
 
 const HBITMAP & cPicture::GetBitmap() const

@@ -85,6 +85,7 @@ const int & MyEngine::cCircle::GetWidth() const
 void MyEngine::cCircle::SetLineColor(const UINT & rgb)
 {
 	m_LineColor = rgb;
+	DeleteObject(m_hPen);
 	m_hPen = CreatePen(m_lineStyle, m_lineWidth, m_LineColor);
 }
 
@@ -98,6 +99,7 @@ void MyEngine::cCircle::SetIsFill(const bool & ok)
 	m_isFill = ok;
 	if (!m_isFill)
 	{
+		DeleteObject(m_hBrush);
 		m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 	}
 }
@@ -112,6 +114,7 @@ void MyEngine::cCircle::SetFillColor(const UINT & rgb)
 	m_fillColor = rgb;
 	if (m_isFill)
 	{
+		DeleteObject(m_hBrush);
 		m_hBrush = CreateSolidBrush(m_fillColor);
 	}
 }
@@ -124,6 +127,7 @@ const UINT & MyEngine::cCircle::GetFillColor() const
 void MyEngine::cCircle::SetLineStyle(const UINT & style)
 {
 	m_lineStyle = style;
+	DeleteObject(m_hPen);
 	m_hPen = CreatePen(m_lineStyle, m_lineWidth, m_LineColor);
 }
 

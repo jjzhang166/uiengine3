@@ -29,8 +29,15 @@ namespace MyEngine
 			int h：制定图片高度，h=0原图高度
 		*/
 		explicit cPicture(const LPWSTR& name,int w=0,int h=0);
+
+		/*
+		通过key值初始化图片
+		*@Param:
+		*	key:key值
+		*/
+		explicit cPicture(const std::string key);
 		
-		~cPicture();
+		virtual ~cPicture();
 
 		/*
 		GetRect()
@@ -65,6 +72,14 @@ namespace MyEngine
 			int h：制定图片高度，h=0原图高度
 		*/
 		void SetBitmap(const LPWSTR& name, int  w = 0, int  h = 0);
+
+		/*
+		*SetBitmapByKey(std::string key);
+		*通过key值设置图片
+		*@Param 
+		*	key：key值
+		*/
+		void SetBitmapByKey(std::string key);
 
 		/*
 		GetBitmap()

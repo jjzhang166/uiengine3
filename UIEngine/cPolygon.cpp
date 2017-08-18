@@ -9,10 +9,11 @@ cPolygon::cPolygon()
 	m_pointList.clear();
 	m_lineColor = RGB(0, 255, 255);
 	m_sideNums = 0;
-	m_width = 4;
+	m_lineWidth = 2;
 	m_fillColor = RGB(0, 0, 0);
+	m_lineStyle = PS_SOLID;
 	m_isFill = FALSE;
-	m_hPen = CreatePen(PS_SOLID, m_width, m_lineColor);
+	m_hPen = CreatePen(m_lineStyle, m_lineWidth, m_lineColor);
 	m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 }
 
@@ -24,10 +25,11 @@ MyEngine::cPolygon::cPolygon(const std::initializer_list<POINT> pointList)
 	m_pointList.assign(pointList);
 	m_lineColor = RGB(0, 255, 255);
 	m_sideNums = m_pointList.size();
-	m_width = 4;
+	m_lineWidth = 4;
 	m_fillColor = RGB(0, 0, 0);
+	m_lineStyle = PS_SOLID;
 	m_isFill = FALSE;
-	m_hPen = CreatePen(PS_SOLID, m_width, m_lineColor);
+	m_hPen = CreatePen(PS_SOLID, m_lineWidth, m_lineColor);
 	m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 }
 
@@ -93,24 +95,40 @@ bool MyEngine::cPolygon::Draw(HDC hDc)
 	return bRet;
 }
 
-void MyEngine::cPolygon::SetWidth(const unsigned & width)
+void MyEngine::cPolygon::SetLineWidth(const unsigned & width)
 {
-	m_width = width;
+	m_lineWidth = width;
+	DeleteObject(m_hPen);
+	m_hPen = CreatePen(m_lineStyle, m_lineWidth, m_lineColor);
 }
 
-const unsigned & MyEngine::cPolygon::GetWidth() const
+const unsigned & MyEngine::cPolygon::GetLineWidth() const
 {
-	return m_width;
+	return m_lineWidth;
 }
 
 void MyEngine::cPolygon::SetLineColor(const UINT & rgb)
 {
 	m_lineColor = rgb;
+	DeleteObject(m_hPen);
+	m_hPen = CreatePen(m_lineStyle, m_lineWidth, m_lineColor);
 }
 
 const UINT & MyEngine::cPolygon::GetLineColor() const
 {
 	return m_lineColor;
+}
+
+void MyEngine::cPolygon::SetLineStyle(const UINT & style)
+{
+	m_lineStyle = style;
+	DeleteObject(m_hPen);
+	m_hPen = CreatePen(m_lineStyle, m_lineWidth, m_lineColor);
+}
+
+const UINT & MyEngine::cPolygon::GetLineStyle()
+{
+	return m_lineStyle;
 }
 
 void MyEngine::cPolygon::SetFill(const BOOL & b)
@@ -126,6 +144,8 @@ const BOOL & MyEngine::cPolygon::IsFill() const
 void MyEngine::cPolygon::SetFillColor(const UINT & rgb)
 {
 	m_fillColor = rgb;
+	DeleteObject(m_hBrush);
+	m_hBrush = CreateSolidBrush(m_fillColor);
 }
 
 const UINT & MyEngine::cPolygon::GetFillColor() const

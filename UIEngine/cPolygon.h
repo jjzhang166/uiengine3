@@ -54,19 +54,19 @@ namespace MyEngine {
 
 		/*
 		SetWidth(const unsigned& width)
-		设置多边形宽度
+		设置多边形边缘宽度
 		@Param：
-			unsigned width：多边形宽度
+			unsigned width：多边形边缘宽度
 		*/
-		void SetWidth(const unsigned& width);
+		void SetLineWidth(const unsigned& width);
 
 		/*
 		GetWidth()
-		获取多边形宽度
+		获取多边形边缘宽度
 		@return unsigned：
-			多边形宽度
+			多边形边缘宽度
 		*/
-		const unsigned& GetWidth() const;
+		const unsigned& GetLineWidth() const;
 
 		/*
 		SetLineColor(const UINT& rgb);
@@ -83,6 +83,15 @@ namespace MyEngine {
 			rgb色
 		*/
 		const UINT& GetLineColor() const;
+
+		/*
+		*SetLineStyle();
+		*设置线条风格
+		*@Param:
+		*	style:线条风格
+		*/
+		void SetLineStyle(const UINT& style);
+		const UINT& GetLineStyle();
 
 		/*
 		SetFill(cosnt BOOL& b)
@@ -121,9 +130,11 @@ namespace MyEngine {
 
 		unsigned m_sideNums;
 
-		unsigned m_width;
+		unsigned m_lineWidth;
 
 		UINT m_lineColor;
+		
+		UINT m_lineStyle;
 
 		BOOL m_isFill;
 

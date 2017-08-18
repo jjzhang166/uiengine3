@@ -104,5 +104,8 @@ namespace MyEngine
 		int m_y;
 		UI_Type m_type;
 		UINT_PTR m_Uid = -1;
+
+		//标记是否使用了资源池中的资源
+		BOOL m_isUsePool;
 	};
 }

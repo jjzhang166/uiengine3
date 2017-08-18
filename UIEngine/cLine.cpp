@@ -75,7 +75,8 @@ void cLine::SetEndPoint(const int & x, const int & y)
 void cLine::SetWidth(const int & w)
 {
 	m_width = w;
-	HPEN hPen = CreatePen(m_style, m_width, m_color);
+	DeleteObject(m_hPen);
+	m_hPen = CreatePen(m_style, m_width, m_color);
 }
 
 const int & cLine::GetWidth() const
@@ -86,7 +87,8 @@ const int & cLine::GetWidth() const
 void cLine::SetColor(const UINT & rgb)
 {
 	m_color = rgb;
-	HPEN hPen = CreatePen(m_style, m_width, m_color);
+	DeleteObject(m_hPen);
+	m_hPen = CreatePen(m_style, m_width, m_color);
 }
 
 const UINT & cLine::GetColor() const
@@ -97,7 +99,8 @@ const UINT & cLine::GetColor() const
 void MyEngine::cLine::SetStyle(const UINT & style)
 {
 	m_style = style;
-	HPEN hPen = CreatePen(m_style, m_width, m_color);
+	DeleteObject(m_hPen);
+	m_hPen = CreatePen(m_style, m_width, m_color);
 }
 
 const UINT & MyEngine::cLine::GetStyle() const

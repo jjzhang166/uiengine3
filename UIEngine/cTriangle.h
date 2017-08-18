@@ -22,7 +22,7 @@ namespace MyEngine
 		*/
 		explicit cTriangle(const POINT& p1, const POINT& p2, const POINT& p3);
 
-		~cTriangle();
+		virtual ~cTriangle();
 
 		/*
 	    SetFirstPoint(const POINT& p1);

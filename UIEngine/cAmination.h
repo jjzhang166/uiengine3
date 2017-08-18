@@ -28,6 +28,22 @@ namespace MyEngine
 		*/
 		cAmination(const LPWSTR& Name,const int& smallRow,const int& smallRank,const int& w = 0, const int& h = 0);
 
+		/*
+		*通过资源key值初始化单图片动画
+		*@Param:
+		*	key:key值
+		*	int smallRow：小图行数
+		*	int smallRank：小图列数
+		*/
+		cAmination(const std::string& key, const int& smallRow, const int& smallRank);
+
+		/*
+	    *通过资源key值初始化多图片动画
+		*@Param:
+		*	key：key值
+		*/
+		cAmination(const std::string& key);
+
 		/* 
 		有参构造函数
 		用一张图片初始化动画
@@ -47,7 +63,7 @@ namespace MyEngine
 		*/
 		explicit cAmination(const std::initializer_list<LPWSTR>& initlist,const int& w=0,const int& h=0);
 		
-		~cAmination();
+		virtual ~cAmination();
 
 		/*
 		SetAmination(const std::initializer_list<LPWSTR>& initlist,const int& x,const int& y)
@@ -58,6 +74,33 @@ namespace MyEngine
 			int h：动画高度
 		*/
 		void SetAmination(const std::initializer_list<LPWSTR>& initlist,const int& w=0,const int& h=0);
+
+		/*
+		*SetAmination(const std::string key);
+		*通过key值设置多图片动画
+		*@Param key：key值
+		*/
+		void SetAmination(const std::string key);
+
+		/*
+		*SetAmination(const std::string key, const int& smallRow, const int& smallRank);
+		*通过key值设置单图片动画
+		*@Param：
+		*	key：key值
+		*	int smallRow：小图行数
+		*	int smallRank：小图列数
+		*/
+		void SetAmination(const std::string key, const int& smallRow, const int& smallRank);
+
+		/*
+		*SetAmination(const LPWSTR& name, const int& smallRow, const int& smallRank);
+		*通过一张图片设置动画
+		*@Param：
+		*	name：图片路径名
+		*	int smallRow：小图行数
+		*	int smallRank：小图列数
+		*/
+		void SetAmination(const LPWSTR& name, const int& smallRow, const int& smallRank);
 
 		/*
 		GetAmination()

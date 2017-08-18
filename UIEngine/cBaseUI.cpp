@@ -5,11 +5,13 @@ using namespace MyEngine;
 cBaseUI::cBaseUI():m_x(0),m_y(0)
 {
 	m_type = UI_Base;
+	m_isUsePool = FALSE;
 }
 
 MyEngine::cBaseUI::cBaseUI(const int& x,const int& y):m_x(x),m_y(y)
 {
 	m_type = UI_Base;
+	m_isUsePool = FALSE;
 }
 
 

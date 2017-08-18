@@ -103,6 +103,7 @@ const UINT & MyEngine::cText::GetBgColor() const
 void MyEngine::cText::SetFont(const LPWSTR & font)
 {
 	m_font = font;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,
@@ -118,6 +119,7 @@ const LPWSTR & MyEngine::cText::GetFont() const
 void MyEngine::cText::SetFontWidth(const int& width)
 {
 	m_fontWidth = width;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,
@@ -133,6 +135,7 @@ const int & MyEngine::cText::GetFontWidth() const
 void MyEngine::cText::SetFontHeight(const int& height)
 {
 	m_fontHeight = height;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,
@@ -148,6 +151,7 @@ const int & MyEngine::cText::GetFonthHeight() const
 void MyEngine::cText::SetWeight(const UINT & weight)
 {
 	m_weight = weight;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,
@@ -163,6 +167,7 @@ const UINT & MyEngine::cText::GetWeight() const
 void MyEngine::cText::SetnEscapement(const UINT & nEscapement)
 {
 	m_nEscapement = nEscapement;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,
@@ -178,6 +183,7 @@ const UINT & MyEngine::cText::GetnEscapement() const
 void MyEngine::cText::SetnOrientation(const UINT & nOrientation)
 {
 	m_nOrientation = nOrientation;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,
@@ -193,6 +199,7 @@ const UINT & MyEngine::cText::GetnOrientation() const
 void MyEngine::cText::SetfdwItalic(const BOOL & b)
 {
 	m_fdwItalic = b;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,
@@ -208,6 +215,7 @@ const BOOL & MyEngine::cText::GetfdwItalic() const
 void MyEngine::cText::SetfdwUnderline(const BOOL & b)
 {
 	m_fdwUnderline = b;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,
@@ -223,6 +231,7 @@ const BOOL & MyEngine::cText::GetfdwUnderline() const
 void MyEngine::cText::SetfdwStrikeOut(const BOOL & b)
 {
 	m_fdwStrikeOut = b;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_fontHeight, m_fontWidth,
 		NULL, NULL, m_weight, m_fdwItalic, m_fdwUnderline
 		, m_fdwStrikeOut, DEFAULT_CHARSET,

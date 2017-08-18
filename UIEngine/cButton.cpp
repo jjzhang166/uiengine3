@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "cButton.h"
 #include"Tool.h"
+#include"cResourcePool.h"
 using namespace MyEngine;
 
 cButton::cButton()
@@ -61,10 +62,10 @@ MyEngine::cButton::cButton(const LPWSTR & bmpPath)
 	m_font = L"¿¬Ìå";
 	m_fontColor = RGB(250, 0, 0);
 	m_height = bitmap.bmHeight;
+	m_width = bitmap.bmWidth;
 	m_Name = L"Button";
 	m_nBount = 3;
 	m_secondColor = RGB(255, 255, 255);
-	m_width = bitmap.bmWidth;
 	m_bgColor = m_firstColor;
 	m_BountColor = m_firstBountColor;
 	m_hFont = CreateFont(m_height - 8, (m_height - 8) / 2, NULL, NULL, 400, FALSE,
@@ -99,9 +100,35 @@ MyEngine::cButton::cButton(const HBITMAP & hbitmap)
 	m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 }
 
+MyEngine::cButton::cButton(std::string key)
+{
+	m_type = UI_Button;
+	m_isUsePool = TRUE;
+	m_bgBitmap = (HBITMAP)cResourcePool::GetResourcePool()->GethObjByKey(key);
+	BITMAP bitmap;
+	GetObject(m_bgBitmap, sizeof(BITMAP), &bitmap);
+	m_firstBountColor = RGB(0, 255, 0);
+	m_secBountColor = RGB(127, 127, 127);
+	m_firstColor = RGB(153, 217, 234);
+	m_font = L"¿¬Ìå";
+	m_fontColor = RGB(250, 0, 0);
+	m_height = bitmap.bmHeight;
+	m_width = bitmap.bmWidth;
+	m_Name = L"Button";
+	m_nBount = 3;
+	m_secondColor = RGB(255, 255, 255);
+	m_bgColor = m_firstColor;
+	m_BountColor = m_firstBountColor;
+	m_hFont = CreateFont(m_height - 8, (m_height - 8) / 2, NULL, NULL, 400, FALSE,
+		FALSE, FALSE, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_DEFAULT_PRECIS,
+		DEFAULT_QUALITY, DEFAULT_PITCH, m_font);
+	m_hPen = CreatePen(PS_SOLID, m_nBount, m_BountColor);
+	m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
+}
+
 cButton::~cButton()
 {
-	m_bgBitmap ? DeleteObject(m_bgBitmap) : 1;
+	m_bgBitmap &&!m_isUsePool? DeleteObject(m_bgBitmap) : 1;
 	m_hFont ? DeleteObject(m_hFont) : 1;
 	m_hPen ? DeleteObject(m_hPen) : 1;
 	m_hBrush ? DeleteObject(m_hBrush) : 1;
@@ -154,6 +181,7 @@ const int & MyEngine::cButton::GetBount() const
 void MyEngine::cButton::SetBountColor(const UINT & rgb)
 {
 	m_BountColor = rgb;
+	DeleteObject(m_hPen);
 	m_hPen = CreatePen(PS_SOLID, m_nBount, m_BountColor);
 }
 
@@ -168,6 +196,7 @@ void MyEngine::cButton::SetfirstColor(const UINT & rgb)
 	if (!m_bgBitmap)
 	{
 		m_bgColor = m_firstColor;
+		DeleteObject(m_hBrush);
 		m_hBrush = CreateSolidBrush(m_bgColor);
 	}
 }
@@ -266,6 +295,7 @@ bool MyEngine::cButton::DrawBitmapBtn(HDC hDc)
 void MyEngine::cButton::SetFont(const LPWSTR & font)
 {
 	m_font = font;
+	DeleteObject(m_hFont);
 	m_hFont = CreateFont(m_height-8,(m_height-8)/2, NULL, NULL, 400, FALSE,
 		FALSE, FALSE, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_DEFAULT_PRECIS,
 		DEFAULT_QUALITY, DEFAULT_PITCH, m_font);
@@ -291,11 +321,13 @@ void MyEngine::cButton::ChangeColor(Btn_Status focus)
 	if (focus == Get_Focus)
 	{
 		m_bgColor = m_secondColor;
+		DeleteObject(m_hBrush);
 		m_hBrush = CreateSolidBrush(m_bgColor);
 	}
 	else if(focus==Lost_Focus)
 	{
 		m_bgColor = m_firstColor;
+		DeleteObject(m_hBrush);
 		m_hBrush = CreateSolidBrush(m_bgColor);
 	}
 }
@@ -305,11 +337,13 @@ void MyEngine::cButton::ChangeBountColor(Btn_Status clicked)
 	if (clicked == Mouse_Down)
 	{
 		m_BountColor = m_secBountColor;
+		DeleteObject(m_hPen);
 		m_hPen = CreatePen(PS_SOLID, m_nBount, m_BountColor);
 	}
 	else if (clicked == Mouse_Up)
 	{
 		m_BountColor = m_firstBountColor;
+		DeleteObject(m_hPen);
 		m_hPen = CreatePen(PS_SOLID, m_nBount, m_BountColor);
 	}
 }
@@ -321,6 +355,7 @@ void MyEngine::cButton::SetBmpBtn(const LPWSTR & bmpPath)
 	GetObject(m_bgBitmap, sizeof(BITMAP), &bitmap);
 	m_width = bitmap.bmWidth;
 	m_height = bitmap.bmHeight;
+	DeleteObject(m_hBrush);
 	m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 }
 
@@ -331,5 +366,6 @@ void MyEngine::cButton::SetBmpBtn(const HBITMAP & hbitmap)
 	GetObject(m_bgBitmap, sizeof(BITMAP), &bitmap);
 	m_width = bitmap.bmWidth;
 	m_height = bitmap.bmHeight;
+	DeleteObject(m_hBrush);
 	m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 }

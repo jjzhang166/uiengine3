@@ -148,7 +148,7 @@ cButton * MyEngine::cGameEngine::CreateButton(const LPWSTR & Name, const int & x
 cButton * MyEngine::cGameEngine::CreateBitmapButton(const LPWSTR & bmpPath,const int& x, const int& y)
 {
 	cButton* pButton = new cButton(bmpPath);
-	pButton->m_Uid = m_Uid;
+	pButton->m_Uid = m_Uid++;
 	pButton->SetX(x);
 	pButton->SetY(y);
 	m_uiList.push_back(pButton);
@@ -158,7 +158,7 @@ cButton * MyEngine::cGameEngine::CreateBitmapButton(const LPWSTR & bmpPath,const
 cButton * MyEngine::cGameEngine::CreateBitmapButton(const HBITMAP & bitmap,const int& x, const int& y)
 {
 	cButton* pButton = new cButton(bitmap);
-	pButton->m_Uid = m_Uid;
+	pButton->m_Uid = m_Uid++;
 	pButton->SetY(y);
 	pButton->SetX(x);
 	m_uiList.push_back(pButton);
@@ -230,6 +230,7 @@ cAmination * MyEngine::cGameEngine::CreateAmination(const std::initializer_list<
 cAmination * MyEngine::cGameEngine::CreateAmination(const LPWSTR & Name, const int & smallRow, const int & smallRank, const int & w, const int h)
 {
 	cAmination* pAmi = new cAmination(Name, smallRow, smallRank, w, h);
+	pAmi->m_Uid = m_Uid++;
 	m_uiList.push_back(pAmi);
 	return pAmi;
 }
@@ -237,8 +238,17 @@ cAmination * MyEngine::cGameEngine::CreateAmination(const LPWSTR & Name, const i
 cAmination * MyEngine::cGameEngine::CreateAmination(const HBITMAP & hbitmap, const int & smallrow, const int & smallrank)
 {
 	cAmination* pAmi = new cAmination(hbitmap, smallrow, smallrank);
+	pAmi->m_Uid = m_Uid++;
 	m_uiList.push_back(pAmi);
 	return pAmi;
+}
+
+cSight * MyEngine::cGameEngine::CreateSight()
+{
+	cSight* pSight = new cSight;
+	pSight->m_Uid = m_Uid++;
+	m_uiList.push_back(pSight);
+	return pSight;
 }
 
 void MyEngine::cGameEngine::AddEventToUi(cBaseUI * ui, UINT_PTR eventId, CallEeventBack callBack,void* Param)
@@ -253,6 +263,7 @@ void MyEngine::cGameEngine::AddEventToUi(cBaseUI * ui, UINT_PTR eventId, CallEev
 
 int MyEngine::cGameEngine::DeleteUI(cBaseUI * pDel)
 {
+	m_lock.Lock();
 	for (auto it = m_uiList.begin(); it != m_uiList.end(); ++it)
 	{
 		if (pDel == *it)
@@ -261,9 +272,11 @@ int MyEngine::cGameEngine::DeleteUI(cBaseUI * pDel)
 			m_uiList.erase(it);
 			delete pDel;
 			pDel = nullptr;
+			m_lock.UnLock();
 			return 1;
 		}
 	}
+	m_lock.UnLock();
 	return 0;
 }
 
@@ -285,6 +298,7 @@ int MyEngine::cGameEngine::QuickDeleteUIs(std::list<cBaseUI*> pDelList)
 	}
 	auto pDelCur = pDelList.begin();
 	int iCount = 0;
+	m_lock.Lock();
 	for (auto it = m_uiList.begin(); it != m_uiList.end();)
 	{
 		if (*it == *pDelCur)
@@ -301,6 +315,7 @@ int MyEngine::cGameEngine::QuickDeleteUIs(std::list<cBaseUI*> pDelList)
 			++it;
 		}
 	}
+	m_lock.UnLock();
 	return iCount;
 }
 
@@ -347,7 +362,7 @@ void MyEngine::cGameEngine::DrawUI()
 	SelectObject(hMemDc, hBitMap);
 	HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
 	FillRect(hMemDc, &rect, hBrush);
-
+	m_lock.Lock();
 	for (auto it : m_uiList)
 	{
 		if (it!=nullptr)
@@ -355,6 +370,7 @@ void MyEngine::cGameEngine::DrawUI()
 			it->Draw(hMemDc);
 		}
 	}
+	m_lock.UnLock();
 
 	BitBlt(hDc, 0, 0, rect.right - rect.left, rect.bottom - rect.top, hMemDc, 0, 0, SRCCOPY);
 	
@@ -395,6 +411,7 @@ void MyEngine::cGameEngine::CheckButtonGetOrLostFocus()
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(m_hWnd, &pt);
+	m_lock.Lock();
 	for (auto it =m_uiList.rbegin();it!=m_uiList.rend();++it)
 	{
 		if ((*it)->GetType() == UI_Button)
@@ -403,6 +420,7 @@ void MyEngine::cGameEngine::CheckButtonGetOrLostFocus()
 			if (pt.x >rect.left&&pt.x<rect.right&&pt.y>rect.top&&pt.y <rect.bottom)
 			{
 				dynamic_cast<cButton*>(*it)->ChangeColor(Get_Focus);
+				m_lock.UnLock();
 				return;
 			}
 			else
@@ -411,6 +429,7 @@ void MyEngine::cGameEngine::CheckButtonGetOrLostFocus()
 			}
 		}
 	}
+	m_lock.UnLock();
 }
 
 void MyEngine::cGameEngine::CheckButtonClick(const Btn_Status & clicked)
@@ -418,6 +437,7 @@ void MyEngine::cGameEngine::CheckButtonClick(const Btn_Status & clicked)
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(m_hWnd, &pt);
+	m_lock.Lock();
 	for (auto it=m_uiList.rbegin();it!=m_uiList.rend();++it)
 	{
 		if ((*it)->GetType() == UI_Button)
@@ -426,10 +446,12 @@ void MyEngine::cGameEngine::CheckButtonClick(const Btn_Status & clicked)
 			if (pt.x >rect.left&&pt.x<rect.right&&pt.y>rect.top&&pt.y <rect.bottom)
 			{
 				dynamic_cast<cButton*>(*it)->ChangeBountColor(clicked);
+				m_lock.UnLock();
 				return;
 			}
 		}
 	}
+	m_lock.UnLock();
 }
 
 void MyEngine::cGameEngine::DoUiKeyEvent(const UINT_PTR & eventId)

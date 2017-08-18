@@ -30,7 +30,7 @@ namespace MyEngine
 		*/
 		explicit cLine(const int& startx, const int& starty, const int& endx, const int& endy);
 
-		~cLine();
+		virtual ~cLine();
 
 		/*
 		SetStartPoint(const POINT&  start)

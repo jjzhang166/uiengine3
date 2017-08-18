@@ -1,5 +1,6 @@
 #pragma once
 #include"cBaseUI.h"
+#include<string>
 
 namespace MyEngine
 {
@@ -43,6 +44,13 @@ namespace MyEngine
 			HBITMAP hbitmap:位图句柄
 		*/
 		explicit cButton(const HBITMAP& hbitmap);
+
+		/*
+		*通过key值初始化图片按钮
+		*@Param 
+		*	key：key值
+		*/
+		explicit cButton(std::string key);
 
 		virtual ~cButton();
 

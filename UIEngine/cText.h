@@ -20,7 +20,7 @@ namespace MyEngine
 		*/
 		explicit cText(const LPWSTR& text);
 
-		~cText();
+		virtual ~cText();
 
 		/*
 		SetText(LPWSTR text)

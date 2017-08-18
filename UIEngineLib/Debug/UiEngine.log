@@ -1,6 +1,0 @@
-﻿  cAmination.cpp
-  正在生成代码...
-f:\visual-studio-liushiyin\gamemapediter\uiengine\camination.cpp(215): warning C4172: 返回局部变量或临时变量的地址
-  正在跳过...(未检测到相关更改)
-  cGameEngine.cpp
-  UiEngine.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\UiEngine.lib

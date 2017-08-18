@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "cAmination.h"
+#include"cResourcePool.h"
 using namespace MyEngine;
 
 cAmination::cAmination()
@@ -31,6 +32,42 @@ MyEngine::cAmination::cAmination(const LPWSTR & Name, const int& smallRow, const
 	m_isOne = TRUE;
 	m_smallRow = smallRow;
 	m_smallRank = smallRank;
+}
+
+MyEngine::cAmination::cAmination(const std::string & key, const int & smallRow, const int & smallRank)
+{
+	m_type = UI_Amination;
+	m_isUsePool = TRUE;
+	m_Amination.push_back((HBITMAP)cResourcePool::GetResourcePool()->GethObjByKey(key));
+	m_isLucency = FALSE;
+	InitAmiConfig();
+	m_lucencyRgb = RGB(0, 0, 0);
+	m_maxFrame = smallRank*smallRow;
+	m_curFrame = 0;
+	m_isAutoRun = TRUE;
+	m_isOne = TRUE;
+	m_smallRow = smallRow;
+	m_smallRank = smallRank;
+}
+
+MyEngine::cAmination::cAmination(const std::string & key)
+{
+	m_type = UI_Amination;
+	m_isUsePool = TRUE;
+	m_isLucency = FALSE;
+	m_lucencyRgb = RGB(0, 0, 0);
+	auto initlist = cResourcePool::GetResourcePool()->GetMulObjByKey(key);
+	for (auto it : initlist)
+	{
+		m_Amination.push_back((HBITMAP)it);
+	}
+	m_maxFrame = m_Amination.size();
+	m_curFrame = 0;
+	InitAmiConfig();
+	m_isAutoRun = TRUE;
+	m_isOne = FALSE;
+	m_smallRow = 0;
+	m_smallRank = 0;
 }
 
 MyEngine::cAmination::cAmination(HBITMAP hbitmap,const int& smallRow, const int& smallRank)
@@ -84,6 +121,56 @@ void MyEngine::cAmination::SetAmination(const std::initializer_list<PWSTR>& init
 		m_Amination.push_back((HBITMAP)LoadImage(NULL, it, IMAGE_BITMAP, w, h, LR_LOADFROMFILE));
 	}
 	InitAmiConfig();
+	m_maxFrame = m_Amination.size();
+	m_curFrame = 0;
+	m_isOne = FALSE;
+	m_isUsePool = FALSE;
+}
+
+void MyEngine::cAmination::SetAmination(const std::string key)
+{
+	auto initlist = cResourcePool::GetResourcePool()->GetMulObjByKey(key);
+	if (initlist.size() == 0)
+	{
+		return;
+	}
+	DeleteAmination();
+	for (auto it : initlist)
+	{
+		m_Amination.push_back((HBITMAP)it);
+	}
+	InitAmiConfig();
+	m_maxFrame = m_Amination.size();
+	m_curFrame = 0;
+	m_isOne = FALSE;
+	m_isUsePool = TRUE;
+}
+
+void MyEngine::cAmination::SetAmination(const std::string key, const int & smallRow, const int & smallRank)
+{
+	DeleteAmination();
+	m_Amination.push_back((HBITMAP)cResourcePool::GetResourcePool()->GethObjByKey(key));
+	InitAmiConfig();
+	m_maxFrame = smallRank*smallRow;
+	m_curFrame = 0;
+	m_isOne = TRUE;
+	m_smallRow = smallRow;
+	m_smallRank = smallRank;
+	m_isUsePool = TRUE;
+
+}
+
+void MyEngine::cAmination::SetAmination(const LPWSTR & name, const int & smallRow, const int & smallRank)
+{
+	DeleteAmination();
+	m_Amination.push_back((HBITMAP)LoadImage(NULL, name, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE));
+	InitAmiConfig();
+	m_maxFrame = smallRank*smallRow;
+	m_curFrame = 0;
+	m_isOne = TRUE;
+	m_smallRow = smallRow;
+	m_smallRank = smallRank;
+	m_isUsePool = FALSE;
 }
 
 const std::vector<HBITMAP>& MyEngine::cAmination::GetAmination() const
@@ -222,6 +309,7 @@ void MyEngine::cAmination::InitAmiConfig()
 
 void MyEngine::cAmination::DeleteAmination()
 {
+	m_isUsePool ? m_Amination.clear() : "";
 	for (auto it : m_Amination)
 	{
 		DeleteObject(it);

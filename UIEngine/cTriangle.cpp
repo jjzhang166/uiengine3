@@ -75,7 +75,8 @@ const POINT & MyEngine::cTriangle::GetThirdPoint() const
 void MyEngine::cTriangle::SetLineColor(const UINT & rgb)
 {
 	m_LineColor = rgb;
-	m_hPen = CreatePen(PS_SOLID, m_Linewidth, m_LineColor);
+	DeleteObject(m_hPen);
+	m_hPen = CreatePen(m_lineStyle, m_Linewidth, m_LineColor);
 }
 
 const UINT & MyEngine::cTriangle::GetLineColor() const
@@ -86,7 +87,8 @@ const UINT & MyEngine::cTriangle::GetLineColor() const
 void MyEngine::cTriangle::SetLineWidth(const int & width)
 {
 	m_Linewidth = width;
-	m_hPen = CreatePen(PS_SOLID, m_Linewidth, m_LineColor);
+	DeleteObject(m_hPen);
+	m_hPen = CreatePen(m_lineStyle, m_Linewidth, m_LineColor);
 }
 
 const int & MyEngine::cTriangle::GetLineWidth() const
@@ -113,6 +115,7 @@ void MyEngine::cTriangle::SetFillColor(const UINT & rgb)
 	m_FillColor = rgb;
 	if (m_isFill)
 	{
+		DeleteObject(m_hBrush);
 		m_hBrush = CreateSolidBrush(m_FillColor);
 	}
 }
@@ -125,6 +128,7 @@ const UINT & MyEngine::cTriangle::GetFillColor() const
 void MyEngine::cTriangle::SetLineStyle(const UINT & style)
 {
 	m_lineStyle = style;
+	DeleteObject(m_hPen);
 	m_hPen = CreatePen(m_lineStyle, m_Linewidth, m_LineColor);
 }
 

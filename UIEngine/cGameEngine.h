@@ -11,6 +11,9 @@
 #include"cRectangle.h"
 #include"cCircle.h"
 #include"cPolygon.h"
+#include"cSight.h"
+#include"cResourcePool.h"
+#include"Lock.h"
 
 namespace MyEngine
 {
@@ -36,7 +39,7 @@ namespace MyEngine
 		cGameEngine();
 
 		explicit cGameEngine(HWND hWnd);
-		~cGameEngine();
+		virtual ~cGameEngine();
 
 		/*
 		OnTimer(int id,int iParam,string str)
@@ -230,6 +233,13 @@ namespace MyEngine
 		cAmination* CreateAmination(const HBITMAP& hbitmap, const int& smallrow, const int& smallrank);
 
 		/*
+		*CreateSight
+		*创建一个视野
+		*@return cSight* ：视野对象指针
+		*/
+		cSight* CreateSight();
+
+		/*
 		AddEventToUI(const cBaseUI* ui,UINT_PTR eventIdCallEventBack callBack)
 		为UI控件添加事件处理函数
 		@Param：
@@ -410,5 +420,8 @@ namespace MyEngine
 
 		//用于为创建的UI控件分配ID
 		static UINT_PTR m_Uid;
+
+		//互斥锁
+		CLock m_lock;
 	};
 }
