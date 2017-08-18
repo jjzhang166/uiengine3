@@ -93,9 +93,33 @@ class CLock
 
 ### 资源池使用实例
 ```
-cResourcePool::GetResourcePool()->AddObjByKey("iage",(HBITMAP)LoadImage(nullptr,L"D:\\btn.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE));
+#include"cResourcePool.h"
+class LoadResource
+{
+    public:
+    LoadResource()
+    {
+       cResourcePool::AddObjByKey("pic1",(HBITMAP)LoadImage(nullptr,L"D:\\puc1.bmp",IMAGE_BITMAP,0,0,LR_LOADFROMFILE));
+       cResourcePool::AddObjByKey("pic2",(HBITMAP)LoadImage(nullptr,L"D:\\puc2.bmp",IMAGE_BITMAP,0,0,LR_LOADFROMFILE));
+       cResourcePool::AddObjByKey("pic3",(HBITMAP)LoadImage(nullptr,L"D:\\puc3.bmp",IMAGE_BITMAP,0,0,LR_LOADFROMFILE));
+       cResourcePool::AddObjByKey("pic4",(HBITMAP)LoadImage(nullptr,L"D:\\puc4.bmp",IMAGE_BITMAP,0,0,LR_LOADFROMFILE));
+    }
+   ~LoadResource(){};
+    
+}
 
-HBITMAP hbit=cResourcePool::GetResourcePool()->GethObjByKey("iage");
 
+#include"cResourcePool.h"
+class Test
+{
+    public:
+    Test()
+    {
+       HBITMAP h= cResourcePool::GethObjByKey("pic1");
+    } 
+    ~Test(){}   
+}
+
+上面的示例只是为了说明资源池中的资源，在加载之后可在任何地方使用，真实情况时用户而定，想要详细了解使用，可查看UIEngine源码，有详细注释
 
 ```
