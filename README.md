@@ -88,6 +88,14 @@ class CLock
 ```
 
 ### 2017/8/18:15:02第一次大更
-添加资源池统一管理GDI句柄资源，主要是管理图片资源。
+添加资源池统一管理GDI句柄资源，主要是管理图片资源，资源池主要采用单例设计模式，一处加载到处使用。
 添加CLock互斥锁，纠正了多线程下时常会发生的资源共享异常。
 
+### 资源池使用实例
+```
+cResourcePool::GetResourcePool()->AddObjByKey("iage",(HBITMAP)LoadImage(nullptr,L"D:\\btn.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE));
+
+HBITMAP hbit=cResourcePool::GetResourcePool()->GethObjByKey("iage");
+
+
+```
