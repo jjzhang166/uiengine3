@@ -83,9 +83,18 @@ cResourcePool::cResourcePool()
 
 cResourcePool::~cResourcePool()
 {
-	for (auto it : m_pool)
+	for (auto ait : m_pool)
 	{
-		DeleteObject(it.second);
+		DeleteObject(ait.second);
 	}
 	m_pool.clear();
+	for (auto bit : m_mulPool)
+	{
+		for (auto it : bit.second)
+		{
+			DeleteObject(it);
+		}
+		bit.second.clear();
+	}
+	m_mulPool.clear();
 }

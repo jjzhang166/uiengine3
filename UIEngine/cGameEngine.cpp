@@ -77,6 +77,7 @@ cGameEngine::~cGameEngine()
 	}
 	m_uiList.clear();
 	m_evnetList.clear();
+	cResourcePool::GetResourcePool()->RealeseSelf();
 	g_pEngine = nullptr;
 }
 
@@ -165,6 +166,14 @@ cButton * MyEngine::cGameEngine::CreateBitmapButton(const HBITMAP & bitmap,const
 	return pButton;
 }
 
+cButton * MyEngine::cGameEngine::CreateButtonByKey(std::string key)
+{
+	cButton* pButton = new cButton(key);
+	pButton->m_Uid = m_Uid++;
+	m_uiList.push_back(pButton);
+	return pButton;
+}
+
 cCircle * MyEngine::cGameEngine::CreateCircle(const RECT & rect)
 {
 	cCircle *pCirecle = new cCircle(rect);
@@ -189,6 +198,14 @@ cPicture * MyEngine::cGameEngine::CreatePicture(const LPWSTR & Name, const int &
 	pPic->m_Uid = m_Uid++;
 	pPic->SetX(x);
 	pPic->SetY(y);
+	m_uiList.push_back(pPic);
+	return pPic;
+}
+
+cPicture * MyEngine::cGameEngine::CreatePictureByKey(std::string key)
+{
+	cPicture *pPic = new cPicture(key);
+	pPic->m_Uid = m_Uid++;
 	m_uiList.push_back(pPic);
 	return pPic;
 }
@@ -238,6 +255,22 @@ cAmination * MyEngine::cGameEngine::CreateAmination(const LPWSTR & Name, const i
 cAmination * MyEngine::cGameEngine::CreateAmination(const HBITMAP & hbitmap, const int & smallrow, const int & smallrank)
 {
 	cAmination* pAmi = new cAmination(hbitmap, smallrow, smallrank);
+	pAmi->m_Uid = m_Uid++;
+	m_uiList.push_back(pAmi);
+	return pAmi;
+}
+
+cAmination * MyEngine::cGameEngine::CreateAminationByKey(std::string key)
+{
+	cAmination* pAmi = new cAmination(key);
+	pAmi->m_Uid = m_Uid++;
+	m_uiList.push_back(pAmi);
+	return pAmi;
+}
+
+cAmination * MyEngine::cGameEngine::CreateAminationByKey(std::string key, const int & smallRow, const int & smallRank)
+{
+	cAmination* pAmi = new cAmination(key, smallRow, smallRank);
 	pAmi->m_Uid = m_Uid++;
 	m_uiList.push_back(pAmi);
 	return pAmi;

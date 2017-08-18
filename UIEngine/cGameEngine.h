@@ -133,6 +133,14 @@ namespace MyEngine
 		cButton* CreateBitmapButton(const HBITMAP& bitmap,const int& x,const int& y);
 
 		/*
+		*CreateButtonByKey(std::string key);
+		*通过key值新建一个Button，要求该资源已经加载进资源池
+		*@Param：
+		*	key：key值
+		*/
+		cButton* CreateButtonByKey(std::string key);
+		
+		/*
 		CreateCircle(const RECT& rect)
 		创建一个圆
 		@Param：
@@ -167,6 +175,14 @@ namespace MyEngine
 		创建的图片对象指针
 		*/
 		cPicture* CreatePicture(const LPWSTR& Name, const int& x, const int& y, const int& w = 0, const int& h = 0);
+
+		/*
+		*CreatePictureByKey(std::string key);
+		*通过key值新建一张图片，要求该资源已经加载进资源池
+		*@Param：
+		*	key：key值
+		*/
+		cPicture* CreatePictureByKey(std::string key);
 
 		/*
 		CreateRectangle(const RECT& rect)
@@ -231,6 +247,22 @@ namespace MyEngine
 			int smallRank：小图列数
 		*/
 		cAmination* CreateAmination(const HBITMAP& hbitmap, const int& smallrow, const int& smallrank);
+
+		/*
+		*CreateAminationByKey(std::string key);
+		*通过key值新建一个多图片动画，要求该资源已经加载进资源池
+		*@Param：
+		*	key：key值
+		*/
+		cAmination* CreateAminationByKey(std::string key);
+
+		/*
+		*CreateAminationByKey(std::string key, const int& smallRow, const int& smallRank);
+		*通过key值新建一张大图动画，要求该资源已经加载进资源池
+		*@Param：
+		*	key：key值
+		*/
+		cAmination* CreateAminationByKey(std::string key, const int& smallRow, const int& smallRank);
 
 		/*
 		*CreateSight
