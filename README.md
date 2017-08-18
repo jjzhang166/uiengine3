@@ -73,6 +73,21 @@ cTriangle
 */
 class cTriangle:public cBaseUI
 
+/*
+*class cResourcePool
+*资源池，用于统一存放并管理GDI资源句柄，节省内存提升效率
+*/
+class cResourcePool
+
+/*
+*class CLock
+*互斥锁
+*/
+class CLock
+
 ```
 
+### 2017/8/18:15:02第一次大更
+添加资源池统一管理GDI句柄资源，主要是管理图片资源。
+添加CLock互斥锁，纠正了多线程下时常会发生的资源共享异常。
 
