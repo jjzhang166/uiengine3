@@ -2,6 +2,17 @@
 
 namespace MyEngine
 {
+	typedef void(*CallEeventBack)(void *param);
+
+	class cBaseUI;
+	typedef struct _UI_Event
+	{
+		cBaseUI* controller;
+		UINT_PTR EventId;
+		void *Param;
+		CallEeventBack CallProc;
+	}UI_Event;
+
 	enum UI_Type
 	{
 		UI_Base,
@@ -96,9 +107,13 @@ namespace MyEngine
 		GetID()
 		获取控件ID
 		@return UINT_PTR:
-			控件ID，若未分配ID这返回-1，只有通过cGameEngine创建的控件才会分配ID
+			控件ID，若未分配ID这返回-1，只有通过cGameEngine创建的控件或加入cGameEngine的控件才会分配ID
 		*/
 		virtual const UINT_PTR& GetID() const;
+		virtual void SetUid(UINT_PTR Uid);
+
+		void SetParent(cBaseUI* parent);
+		cBaseUI* GetParent();
 	protected:
 		int m_x;
 		int m_y;
@@ -107,5 +122,7 @@ namespace MyEngine
 
 		//标记是否使用了资源池中的资源
 		BOOL m_isUsePool;
+
+		cBaseUI* m_parent;
 	};
 }

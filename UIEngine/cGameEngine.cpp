@@ -3,10 +3,12 @@
 #include"Tool.h"
 
 using namespace MyEngine;
+#define TimerId 1
 
-UINT_PTR cGameEngine::m_Uid = 0;
+//为控件分配Id
+static UINT_PTR m_Uid = 0;
 
-cGameEngine *g_pEngine;
+cGameEngine* g_pEngine = nullptr;
 
 HHOOK g_hMouseHook;
 HHOOK g_KeyHook;
@@ -34,36 +36,26 @@ LRESULT CALLBACK KeyHookProc(int code, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case WM_KEYUP:
-			g_pEngine->DoKeyUpMsg(lParam);
-			break;
 		case WM_KEYDOWN:
-			g_pEngine->DoKeyDownMsg(lParam);
+			g_pEngine->DoKeyMsg(lParam);
 			break;
 		}
 	}
 	return CallNextHookEx(g_KeyHook, code, wParam, lParam);
 }
 
-MyEngine::cGameEngine::cGameEngine()
+MyEngine::SIZE cGameEngine::GetClientSize()
 {
-	m_hWnd = NULL;
-	g_hMouseHook = SetWindowsHook/*Ex*/(WH_MOUSE/*_LL*/, HookMouseProc/*, nullptr, 0*/);
-	g_KeyHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyHookProc, nullptr, 0);
-	AddTimer(1, 50);
-	g_pEngine = this;
+	RECT rect;
+	GetClientRect(m_hWnd, &rect);
+	SIZE Size;
+	Size.width = rect.right - rect.left;
+	Size.height = rect.bottom - rect.top;
+	return Size;
 }
 
-cGameEngine::cGameEngine(HWND hWnd)
+cGameEngine::cGameEngine()
 {
-	m_hWnd = hWnd;
-	if (m_hWnd == nullptr)
-	{
-		m_wError = L"绑定窗口失败或传入无效窗口句柄";
-	}
-	g_hMouseHook = SetWindowsHook/*Ex*/(WH_MOUSE/*_LL*/,HookMouseProc/*, nullptr, 0*/);
-	g_KeyHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyHookProc, nullptr, 0);
-	AddTimer(1, 50);
-	g_pEngine = this;
 }
 
 cGameEngine::~cGameEngine()
@@ -77,15 +69,41 @@ cGameEngine::~cGameEngine()
 	}
 	m_uiList.clear();
 	m_evnetList.clear();
-	cResourcePool::GetResourcePool()->RealeseSelf();
-	g_pEngine = nullptr;
+	cResourcePool::GetResourcePool()->ReleaseSelf();
+}
+
+cGameEngine* MyEngine::cGameEngine::GetEngine()
+{
+	if (g_pEngine == nullptr)
+	{
+		g_pEngine = new cGameEngine;
+		return g_pEngine;
+	}
+	return g_pEngine;
+}
+
+bool MyEngine::cGameEngine::init(HWND hWnd)
+{
+	m_hWnd = hWnd;
+	if (m_hWnd == nullptr)
+	{
+		m_wError = L"绑定窗口失败或传入无效窗口句柄";
+		return false;
+	}
+	UnhookWindowsHookEx(g_hMouseHook);
+	UnhookWindowsHookEx(g_KeyHook);
+	g_hMouseHook = SetWindowsHook/*Ex*/(WH_MOUSE/*_LL*/, HookMouseProc/*, nullptr, 0*/);
+	g_KeyHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyHookProc, nullptr, 0);
+	DeleteTimer(TimerId);
+	AddTimer(TimerId, 50);
+	return true;
 }
 
 int cGameEngine::OnTimer(int id, int iParam, string str)
 {
 	switch (id)
 	{
-	case 1:
+	case TimerId:
 		DrawUI();
 		CheckButtonGetOrLostFocus();
 		break;
@@ -301,7 +319,7 @@ int MyEngine::cGameEngine::DeleteUI(cBaseUI * pDel)
 	{
 		if (pDel == *it)
 		{
-			DeleteEvent(pDel);
+			DeleteEvent(pDel->GetID());
 			m_uiList.erase(it);
 			delete pDel;
 			pDel = nullptr;
@@ -336,7 +354,7 @@ int MyEngine::cGameEngine::QuickDeleteUIs(std::list<cBaseUI*> pDelList)
 	{
 		if (*it == *pDelCur)
 		{
-			DeleteEvent(*pDelCur);
+			DeleteEvent((*pDelCur)->GetID());
 			it = m_uiList.erase(it);
 			delete *pDelCur;
 			*pDelCur = nullptr;
@@ -354,22 +372,26 @@ int MyEngine::cGameEngine::QuickDeleteUIs(std::list<cBaseUI*> pDelList)
 
 BOOL MyEngine::cGameEngine::DeleteEvent(cBaseUI * ui, UINT_PTR eventId)
 {
+	m_lock.Lock();
 	for (auto it = m_evnetList.begin(); it != m_evnetList.end(); ++it)
 	{
 		if (it->controller == ui&&it->EventId == eventId)
 		{
 			m_evnetList.erase(it);
+			m_lock.UnLock();
 			return TRUE;
 		}
-	}
+	}	
+	m_lock.UnLock();
 	return FALSE;
 }
 
-int MyEngine::cGameEngine::DeleteEvent(cBaseUI * ui)
+int MyEngine::cGameEngine::DeleteEvent(UINT_PTR uid)
 {
+	m_lock.Lock();
 	for (auto it = m_evnetList.begin(); it != m_evnetList.end();)
 	{
-		if (it->controller == ui)
+		if (it->controller->GetID()==uid)
 		{
 			it=m_evnetList.erase(it);
 		}
@@ -378,6 +400,7 @@ int MyEngine::cGameEngine::DeleteEvent(cBaseUI * ui)
 			++it;
 		}
 	}
+	m_lock.UnLock();
 	return 0;
 }
 
@@ -417,6 +440,8 @@ void MyEngine::cGameEngine::DoMouseMsg(WPARAM wParam)
 {
 	switch (wParam)
 	{
+	case WM_SETCURSOR:
+		break;
 	case WM_LBUTTONUP:
 		CheckButtonClick(Mouse_Up);
 		break;
@@ -427,13 +452,7 @@ void MyEngine::cGameEngine::DoMouseMsg(WPARAM wParam)
 	DoUiMouseEvent(wParam);
 }
 
-void MyEngine::cGameEngine::DoKeyDownMsg(LPARAM lParam)
-{
-	KBDLLHOOKSTRUCT *pkbhs = (KBDLLHOOKSTRUCT*)lParam;
-	DoUiKeyEvent(pkbhs->vkCode);
-}
-
-void MyEngine::cGameEngine::DoKeyUpMsg(LPARAM lParam)
+void MyEngine::cGameEngine::DoKeyMsg(LPARAM lParam)
 {
 	KBDLLHOOKSTRUCT *pkbhs = (KBDLLHOOKSTRUCT*)lParam;
 	DoUiKeyEvent(pkbhs->vkCode);
@@ -470,7 +489,6 @@ void MyEngine::cGameEngine::CheckButtonClick(const Btn_Status & clicked)
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(m_hWnd, &pt);
-	m_lock.Lock();
 	for (auto it=m_uiList.rbegin();it!=m_uiList.rend();++it)
 	{
 		if ((*it)->GetType() == UI_Button)
@@ -479,16 +497,15 @@ void MyEngine::cGameEngine::CheckButtonClick(const Btn_Status & clicked)
 			if (pt.x >rect.left&&pt.x<rect.right&&pt.y>rect.top&&pt.y <rect.bottom)
 			{
 				dynamic_cast<cButton*>(*it)->ChangeBountColor(clicked);
-				m_lock.UnLock();
 				return;
 			}
 		}
 	}
-	m_lock.UnLock();
 }
 
 void MyEngine::cGameEngine::DoUiKeyEvent(const UINT_PTR & eventId)
 {
+	m_lock.Lock();
 	for (auto it : m_evnetList)
 	{
 		if (it.EventId == eventId)
@@ -496,6 +513,7 @@ void MyEngine::cGameEngine::DoUiKeyEvent(const UINT_PTR & eventId)
 			it.CallProc(it.controller);
 		}
 	}
+	m_lock.UnLock();
 }
 
 void MyEngine::cGameEngine::DoUiMouseEvent(const UINT_PTR & eventId)
@@ -534,15 +552,38 @@ BOOL MyEngine::cGameEngine::ChangeWndStyle(const LONG & style)
 	return SetWindowLong(m_hWnd, GWL_STYLE, style);
 }
 
+bool MyEngine::cGameEngine::AddEngineUi(cBaseUI * ui)
+{
+	for (auto it : m_uiList)
+	{
+		if (it == ui)
+		{
+			return false;
+		}
+	}
+	ui->SetUid(m_Uid++);
+	m_uiList.push_back(ui);
+	return true;
+}
+
+void MyEngine::cGameEngine::ReleaseSelf()
+{
+	delete g_pEngine;
+	g_pEngine = nullptr;
+}
+
 BOOL MyEngine::cGameEngine::DealMouseMsg(const cBaseUI * ui, const UINT_PTR & eventId)
 {
+	m_lock.Lock();
 	for (auto it : m_evnetList)
 	{
 		if (it.controller == ui&&it.EventId == eventId)
 		{
 			it.CallProc(it.Param);
+			m_lock.UnLock();
 			return TRUE;
 		}
 	}
+	m_lock.UnLock();
 	return FALSE;
 }

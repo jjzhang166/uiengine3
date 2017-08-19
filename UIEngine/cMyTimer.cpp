@@ -5,7 +5,6 @@
 
 cMyTimer::cMyTimer()
 {
-
 }
 
 cMyTimer::~cMyTimer()
@@ -21,10 +20,13 @@ void CheckTimerRun(void* p)
 		_endthread();
 		return;
 	}
-	while(1)
+	while(true)
 	{
-		
 		pTimer->CheckAddTimer();
+		if (pTimer->QuitThread())
+		{
+			break;
+		}
 		//删除需要删除的定时器
 		pTimer->CheckDelTimer();
 
@@ -127,4 +129,10 @@ void cMyTimer::CheckAddTimer()
 		m_timerList.push_back(*it);
 	}
 	m_tempList.clear();
+}
+
+bool cMyTimer::QuitThread()
+{
+	bool bRet = m_timerList.size() ? false : true;
+	return bRet;
 }

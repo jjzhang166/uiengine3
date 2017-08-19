@@ -1,17 +1,4 @@
-﻿  正在跳过...(未检测到相关更改)
-  stdafx.cpp
-  cGameController.cpp
-  正在生成代码...
-  正在编译...
-  圣骑士.cpp
-  cPlayer.cpp
-  cMonsterStar.cpp
-  cMonsterQiu.cpp
-  cMonsterCreater.cpp
-f:\visual-studio-liushiyin\gamemapediter\圣骑士\cmonstercreater.h(58): warning C4091: “static ”: 没有声明变量时忽略“cMonsterCreater”的左侧
-  cMonsterBull.cpp
-  cMonsterAma.cpp
-  cMonster.cpp
-  正在生成代码...
+﻿  cGameController.cpp
+f:\visual-studio-liushiyin\gamemapediter\uiengine\cgameengine.h(24): warning C4091: “typedef ”: 没有声明变量时忽略“MyEngine::SIZE”的左侧
   圣骑士.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\圣骑士.exe
   圣骑士.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\圣骑士.pdb (Partial PDB)

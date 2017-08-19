@@ -7,7 +7,7 @@ using namespace std;
 //单例设计模式
 cResourcePool* theOne = nullptr;
 
-cResourcePool * cResourcePool::GetResourcePool()
+cResourcePool* MyEngine::cResourcePool::GetResourcePool()
 {
 	if (theOne == nullptr)
 	{
@@ -71,7 +71,7 @@ bool MyEngine::cResourcePool::ReleaseByKey(std::string key)
 	return bRet;
 }
 
-void MyEngine::cResourcePool::RealeseSelf()
+void MyEngine::cResourcePool::ReleaseSelf()
 {
 	delete theOne;
 	theOne = nullptr;

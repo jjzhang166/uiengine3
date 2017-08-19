@@ -3,6 +3,7 @@
 #include"Tool.h"
 #include<iostream>
 #include<fstream>
+using namespace MyEngine;
 
 #pragma comment(lib,"msimg32.lib")
 #ifdef _DEBUG
@@ -37,6 +38,8 @@ cMapEditer::cMapEditer()
 
 cMapEditer::cMapEditer(HWND hWnd)
 {
+	m_Ui = cGameEngine::GetEngine();
+	m_Ui->init(hWnd);
 	m_MapPath = L"";
 	m_rank = 0;
 	m_row = 0;
@@ -45,17 +48,17 @@ cMapEditer::cMapEditer(HWND hWnd)
 	m_wndWidth = 800;
 	m_wndHeight = 600;
 	MoveToCenter(hWnd, m_wndWidth, m_wndHeight);
-	m_Ui.SethWnd(hWnd);
-	LONG style = m_Ui.GetWndStyle();
+	LONG style = m_Ui->GetWndStyle();
 	style &= ~WS_THICKFRAME;
 	style &= ~WS_MAXIMIZEBOX;
-	m_Ui.ChangeWndStyle(style);
+	m_Ui->ChangeWndStyle(style);
 }
 
 
 cMapEditer::~cMapEditer()
 {
 	deleteMapInfo();
+	m_Ui->ReleaseSelf();
 }
 
 BOOL cMapEditer::SetRowAndRabk(const int & row, const int & rank,const int& terrianSpecies)
@@ -71,8 +74,8 @@ BOOL cMapEditer::SetRowAndRabk(const int & row, const int & rank,const int& terr
 		return FALSE;
 	}
 	deleteMapInfo();
-	m_Ui.DeleteUIs(m_splitLine);
-	m_Ui.DeleteUIs(m_terrianRect);
+	m_Ui->DeleteUIs(m_splitLine);
+	m_Ui->DeleteUIs(m_terrianRect);
 	m_splitLine.clear();
 	m_terrianRect.clear();
 	m_row = row;
@@ -94,7 +97,7 @@ BOOL cMapEditer::LoadMapResource(const LPWSTR & mapPath)
 	{
 		return FALSE;
 	}
-	m_Ui.DeleteUI(m_MapImage);
+	m_Ui->DeleteUI(m_MapImage);
 	m_MapPath = mapPath;
 	HBITMAP hbtimap = (HBITMAP)LoadImage(nullptr, mapPath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	BITMAP bitmap;
@@ -144,11 +147,11 @@ void cMapEditer::CreateSplitLine()
 	m_baseYSize = baseSizeY;
 	for (int i = 0; i < m_row; ++i)
 	{
-		m_splitLine.push_back(m_Ui.CreateLine(POINT{ 0,i*baseSizeY }, POINT{ m_wndWidth,i*baseSizeY }));
+		m_splitLine.push_back(m_Ui->CreateLine(POINT{ 0,i*baseSizeY }, POINT{ m_wndWidth,i*baseSizeY }));
 	}
 	for (int i = 0; i < m_rank; ++i)
 	{
-		m_splitLine.push_back(m_Ui.CreateLine(POINT{ i*baseSizeX,0 }, POINT{ i*baseSizeX,m_wndHeight }));
+		m_splitLine.push_back(m_Ui->CreateLine(POINT{ i*baseSizeX,0 }, POINT{ i*baseSizeX,m_wndHeight }));
 	}
 }
 
@@ -182,7 +185,7 @@ void cMapEditer::MouseDown()
 	}
 	POINT pt;
 	GetCursorPos(&pt);
-	ScreenToClient(m_Ui.GethWnd(), &pt);
+	ScreenToClient(m_Ui->GethWnd(), &pt);
 	int rank = pt.x / m_baseXSize;
 	int row = pt.y / m_baseYSize;
 	if (m_terrianSpecies)
@@ -202,11 +205,11 @@ void cMapEditer::StartEdit(HWND hWnd)
 	m_wndWidth = 800;
 	m_wndHeight = 600;
 	MoveToCenter(hWnd, m_wndWidth, m_wndHeight);
-	m_Ui.SethWnd(hWnd);
-	LONG style = m_Ui.GetWndStyle();
+	m_Ui->SethWnd(hWnd);
+	LONG style = m_Ui->GetWndStyle();
 	style &= ~WS_THICKFRAME;
 	style &= ~WS_MAXIMIZEBOX;
-	m_Ui.ChangeWndStyle(style);
+	m_Ui->ChangeWndStyle(style);
 }
 
 bool cMapEditer::deleteMapInfo()
@@ -227,21 +230,21 @@ BOOL cMapEditer::AutoChangeWndSize(const int & mapWidth, const int & mapHeight)
 {
 	int maxWidth = GetSystemMetrics(SM_CXSCREEN)-100;
 	int maxHeight = GetSystemMetrics(SM_CYSCREEN)-95;
-	auto xyBount = GetWindowBount(m_Ui.GethWnd());
+	auto xyBount = GetWindowBount(m_Ui->GethWnd());
 	if (mapWidth < maxWidth&&mapHeight<maxHeight)
 	{
-		MoveToCenter(m_Ui.GethWnd(), mapWidth + xyBount.xBount, mapHeight + xyBount.yBount);
+		MoveToCenter(m_Ui->GethWnd(), mapWidth + xyBount.xBount, mapHeight + xyBount.yBount);
 		m_wndWidth = mapWidth;
 		m_wndHeight = mapHeight;
-	    m_MapImage=m_Ui.CreatePicture(m_MapPath, 0, 0);
+	    m_MapImage=m_Ui->CreatePicture(m_MapPath, 0, 0);
 	}
 	else
 	{
 		m_wndWidth = (mapWidth*maxHeight) / mapHeight;
 		m_wndHeight = (mapHeight*maxWidth) / mapWidth;
 		m_wndWidth <= maxWidth ? m_wndHeight = maxHeight : m_wndWidth = maxWidth;
-		MoveToCenter(m_Ui.GethWnd(), m_wndWidth + xyBount.xBount, m_wndHeight + xyBount.yBount);
-		m_MapImage = m_Ui.CreatePicture(m_MapPath, 0, 0,m_wndWidth,m_wndHeight);
+		MoveToCenter(m_Ui->GethWnd(), m_wndWidth + xyBount.xBount, m_wndHeight + xyBount.yBount);
+		m_MapImage = m_Ui->CreatePicture(m_MapPath, 0, 0,m_wndWidth,m_wndHeight);
 	}
 	return  true;
 }
@@ -265,7 +268,7 @@ void cMapEditer::CreateTerrianRect(const POINT & pt, const int& w, const int& h,
 		{
 			if (fillColor == MapStatusColor[0])
 			{
-				m_Ui.DeleteUI(*it);
+				m_Ui->DeleteUI(*it);
 				m_terrianRect.erase(it);
 			}
 			else
@@ -276,7 +279,7 @@ void cMapEditer::CreateTerrianRect(const POINT & pt, const int& w, const int& h,
 			return;
 		}
 	}
-	MyEngine::cRectangle* rect = m_Ui.CreateRectangle(RECT{ pt.x,pt.y,pt.x + w,pt.y + h });
+	MyEngine::cRectangle* rect = m_Ui->CreateRectangle(RECT{ pt.x,pt.y,pt.x + w,pt.y + h });
 	rect->SetIsFill(true);
 	rect->SetLineColor(fillColor);
 	rect->SetFillColor(fillColor);

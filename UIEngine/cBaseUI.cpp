@@ -48,3 +48,18 @@ const UINT_PTR & MyEngine::cBaseUI::GetID() const
 {
 	return m_Uid;
 }
+
+void MyEngine::cBaseUI::SetUid(UINT_PTR Uid)
+{
+	m_Uid = Uid;
+}
+
+void MyEngine::cBaseUI::SetParent(cBaseUI * parent)
+{
+	m_parent = parent;
+}
+
+cBaseUI * MyEngine::cBaseUI::GetParent()
+{
+	return m_parent;
+}

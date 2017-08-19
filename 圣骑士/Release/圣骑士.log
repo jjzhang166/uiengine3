@@ -1,8 +1,19 @@
 ﻿  cGameController.cpp
+F:\Visual-Studio-liushiyin\GameMapEditer\UIEngine\cGameEngine.h(24): warning C4091: “typedef ”: 没有声明变量时忽略“MyEngine::SIZE”的左侧
+  cMonster.cpp
+  cMonsterAma.cpp
+  cMonsterBull.cpp
+  cMonsterCreater.cpp
+f:\visual-studio-liushiyin\gamemapediter\圣骑士\cMonsterCreater.h(58): warning C4091: “static ”: 没有声明变量时忽略“cMonsterCreater”的左侧
+  cMonsterQiu.cpp
+  cMonsterStar.cpp
+  cPlayer.cpp
   圣骑士.cpp
+F:\Visual-Studio-liushiyin\GameMapEditer\UIEngine\cGameEngine.h(24): warning C4091: “typedef ”: 没有声明变量时忽略“MyEngine::SIZE”的左侧
   正在生成代码
-  32 of 1207 functions ( 2.7%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    22 functions had inline decision re-evaluated but remain unchanged
+f:\visual-studio-liushiyin\gamemapediter\uiengine\camination.cpp(302): warning C4172: 返回局部变量或临时变量的地址
+  176 of 1216 functions (14.5%) were compiled, the rest were copied from previous compilation.
+    15 functions were new in current compilation
+    14 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   圣骑士.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Release\圣骑士.exe

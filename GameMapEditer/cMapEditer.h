@@ -122,7 +122,7 @@ private:
 
 	int m_baseYSize;
 
-	MyEngine::cGameEngine m_Ui;
+	MyEngine::cGameEngine* m_Ui;
 
 	std::list<MyEngine::cBaseUI*> m_terrianRect;
 

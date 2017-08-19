@@ -52,7 +52,7 @@ cGameController::cGameController()
 
 cGameController::~cGameController()
 {
-	delete m_pUI;
+	m_pUI->ReleaseSelf();
 	m_pUI = nullptr;
 	if (m_Player != nullptr)
 	{
@@ -69,7 +69,8 @@ int cGameController::OnTimer(int id, int iParam, string str)
 
 void cGameController::StartGame(const HWND & hWnd)
 {
-	m_pUI = new MyEngine::cGameEngine(hWnd);
+	m_pUI = cGameEngine::GetEngine();
+	m_pUI->init(hWnd);
 	auto xyBount = GetWindowBount(m_pUI->GethWnd());
 	m_pUI->CenterWindow(CLIENTX + xyBount.xBount, CLIENTY + xyBount.yBount);
 	m_pUI->ChangeWndStyle(m_pUI->GetWndStyle()&~WS_THICKFRAME&~WS_MAXIMIZEBOX);

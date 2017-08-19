@@ -17,29 +17,36 @@
 
 namespace MyEngine
 {
-	typedef void(*CallEeventBack)(void *param);
-
-	typedef struct _UI_Event
+	 typedef struct SIZE
 	{
-		cBaseUI* controller;
-	 	UINT_PTR EventId;
-		void *Param;
-		CallEeventBack CallProc;
-	}UI_Event;
+		int width;
+		int height;
+	};
 
 	/*
 	cGameEngine
 	UI引擎类，管理所有界面上的图形显示，图形类指针创建后用
 	户无需主动删除，UI引擎类在程序结束时会自动删除，用户也
 	可在需要时主动删除。
+	该类采用单实例设计模式，不要试图新建此类的对象，
+	而要通过GetEngine()获取此类对象。
 	*/
 	class cGameEngine :public cMyTimer
 	{
 	public:
-		cGameEngine();
+		/*
+		*GetEngine();
+		*获取单实例引擎对象
+		*/
+		static cGameEngine* GetEngine();
 
-		explicit cGameEngine(HWND hWnd);
-		virtual ~cGameEngine();
+		/*
+		*init(HWND hWnd);
+		*初始化单实例引擎，并绑定窗口
+		*@Param hWnd：需要绑定的窗口句柄
+		*@return bool：成功返回true，失败返回false
+		*/
+		bool init(HWND hWnd);
 
 		/*
 		OnTimer(int id,int iParam,string str)
@@ -327,11 +334,11 @@ namespace MyEngine
 		DeleteEvent(cBaseUI* ui)
 		删除某一UI控件相关联的所有事件
 		@Param：
-			cBaseUI* ui：指定的ui控件对象指针
+			uid：指定的ui控件的id号
 		@return int：
 			删除的事件个数
 		*/
-		int DeleteEvent(cBaseUI* ui);
+		int DeleteEvent(UINT_PTR uid);
 
 		/*
 		DrawUI();
@@ -348,20 +355,12 @@ namespace MyEngine
 		void DoMouseMsg(WPARAM wParam);
 
 		/*
-		DoKeyDownMsg(LPARAM lParam)
+		DoKeyMsg(LPARAM lParam)
 		处理键盘按键按下消息
 		@Param：
 			LPARAM lParam：消息的详细信息
 		*/
-		void DoKeyDownMsg(LPARAM lParam);
-
-		/*
-		DoKeyDownMsg(LPARAM lParam)
-		处理键盘按键弹起消息
-		@Param：
-			LPARAM lParam：消息的详细信息
-		*/
-		void DoKeyUpMsg(LPARAM lParam);
+		void DoKeyMsg(LPARAM lParam);
 
 		/*
 		CheckButtonGetOrLostFocus()
@@ -427,7 +426,27 @@ namespace MyEngine
 			FALSE：改变失败
 		*/
 		BOOL ChangeWndStyle(const LONG& style);
+
+		/*
+		*AddEngineUi
+		*向引擎内添加UI控件
+		*@Param ui*：添加进引擎的ui控件
+		*@return bool：添加成功返回true，如果该控件已经存在引擎内则返回false
+		*/
+		bool AddEngineUi(cBaseUI* ui);
+
+		void ReleaseSelf();
+
+		/*
+		*GetClientSize();
+		*获取客户区窗口尺寸
+		*@return SIZE：返回客户区尺寸
+		*/
+		SIZE GetClientSize();
 	private:
+		cGameEngine();
+		virtual ~cGameEngine();
+
 		/*
 		DealMouseMsg(cBaseUI* ui,UINT_PTR eventId)
 		处理UI控件鼠标点击事件
@@ -449,9 +468,6 @@ namespace MyEngine
 		std::list<cBaseUI*> m_uiList;
 
 		std::list<UI_Event> m_evnetList;
-
-		//用于为创建的UI控件分配ID
-		static UINT_PTR m_Uid;
 
 		//互斥锁
 		CLock m_lock;

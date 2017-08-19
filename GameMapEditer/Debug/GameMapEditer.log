@@ -1,2 +1,4 @@
-﻿  GameMapEditer.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\GameMapEditer.exe
+﻿  GameMapEditer.cpp
+f:\visual-studio-liushiyin\gamemapediter\uiengine\cgameengine.h(24): warning C4091: “typedef ”: 没有声明变量时忽略“MyEngine::SIZE”的左侧
+  GameMapEditer.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\GameMapEditer.exe
   GameMapEditer.vcxproj -> F:\Visual-Studio-liushiyin\GameMapEditer\Debug\GameMapEditer.pdb (Partial PDB)

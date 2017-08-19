@@ -47,6 +47,9 @@ public:
 
 	//检测是否有新的list加进来
 	void CheckAddTimer();
+
+	//检测是否退出线程
+	bool QuitThread();
 private:
 	TimerList m_timerList;	//保存所有定时器
 

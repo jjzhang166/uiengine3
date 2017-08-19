@@ -2,12 +2,14 @@
 #include<map>
 #include<string>
 #include<vector>
+#include<memory>
 
 namespace MyEngine
 {
 	/*
 	*class cResourcePool
 	*资源池，用于统一存放并管理GDI资源句柄，节省内存提升效率
+	*不要试图新建此类的对象，而要通过GetResourcePool()获取此类对象
 	*/
 	class cResourcePool
 	{
@@ -56,12 +58,8 @@ namespace MyEngine
 		*释放指定key值的资源句柄
 		*/
 		bool ReleaseByKey(std::string key);
-
-		/*
-		*RealeseSelf();
-		*释放改单例对象的内存，同时清理已存在的资源
-		*/
-		void RealeseSelf();
+		
+		void ReleaseSelf();
 	private:
 		cResourcePool();
 		~cResourcePool();

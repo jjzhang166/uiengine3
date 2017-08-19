@@ -24,7 +24,7 @@ cButton::cButton()
 		FALSE, FALSE, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_DEFAULT_PRECIS,
 		DEFAULT_QUALITY, DEFAULT_PITCH, m_font);
 	m_hPen = CreatePen(PS_SOLID, m_nBount, m_BountColor);
-    m_hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
+	m_hBrush = CreateSolidBrush(m_firstColor);
 }
 
 MyEngine::cButton::cButton(const LPWSTR & Name, const int & width, const int & height)
