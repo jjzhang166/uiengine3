@@ -85,7 +85,37 @@ class cResourcePool
 */
 class CLock
 
+
+/*
+*class cSight
+*视野，管理一个视野（即当前所能看到的所有事物）的内容
+*/
+class cSight:public cBaseUI,cMyTimer
+
 ```
+### 使用示例
+```
+HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+	   0,0,800,600, nullptr, nullptr, hInstance, nullptr);
+   
+   if (!hWnd)
+   {
+	   return FALSE;
+   }
+   MyEngine::cGameEngine::GetEngine()->init(hWnd);   //初始化并绑定窗口句柄
+   MyEngine::cGameEngine::GetEngine()->CreateCircle(RECT{ 10,10,100,100 });   //新建一个圆
+   MyEngine::cGameEngine::GetEngine()->CreateLine(POINT{ 20,30 }, POINT{ 100,200 });   //新建一个直线
+   MyEngine::cButton* btn = new MyEngine::cButton(L"点我", 100, 30);   
+   btn->SetX(100);
+   btn->SetY(200);
+   MyEngine::cGameEngine::GetEngine()->AddEngineUi(btn);    //出直接Create之外还可以，自己新建后添加到Engine。
+   ShowWindow(hWnd, nCmdShow);
+   UpdateWindow(hWnd);
+```
+
+### 示例效果图
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0819/151728_cf1f290e_1296205.jpeg "捕获.JPG")
+
 
 ### 2017/8/18:15:02第一次大更
 添加资源池统一管理GDI句柄资源，主要是管理图片资源，资源池主要采用单例设计模式，一处加载到处使用。
