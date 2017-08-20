@@ -95,7 +95,7 @@ class cSight:public cBaseUI,cMyTimer
 ```
 ### 使用示例
 ```
-HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 	   0,0,800,600, nullptr, nullptr, hInstance, nullptr);
    
    if (!hWnd)
@@ -111,6 +111,9 @@ HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
    MyEngine::cGameEngine::GetEngine()->AddEngineUi(btn);    //出直接Create之外还可以，自己新建后添加到Engine。
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
+
+
+   //在程序结束的恰当位置必须调用MyEngine::cGameEngine::GetEmgine()->ReleaseSelf释放资源
 ```
 
 ### 示例效果图
