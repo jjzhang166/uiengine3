@@ -1,98 +1,8 @@
 C++编写的简单UI引擎，方便开发windows界面程序,附件中含有用此UI引擎开发的游戏地图编辑器和一个冒险小游戏（该游戏暂时还未做完）。
 项目附件中有地图编辑器和冒险小游戏64位可执行文件。UiEngine文件夹中包含项目源码，UIEngneLib文件夹包含UI引擎静态链接库，可直接下载和UiEngine文件夹中的源码使用。
-```
-此UI引擎是对win32API的一个封装非常适合对win32API不熟悉但又需要使用win32API编程的开发使用。
 
-class cGameEngine是引擎类其主要负责对UI界面的管理，通过这个类可以在界面上创建各种UI元素，并管理UI元素。
-次说明书只是简单说明各个类的作用，详细说明及使用方法可查看项目源代码
+### 此UI引擎是对win32API的一个封装非常适合对win32API不熟悉但又需要使用win32API编程的开发使用。
 
-/*
-cBaseUI
-所有UI类的基类
-*/
-class cBaseUI   
-
-/*
-cAmination
-动画元素继承自cBaseUI
-*/
-class cAmination:public cBaseUI
-
-/*
-cButton
-按钮元素继承自cBaseUI
-*/
-class cButton :public cBaseUI
-
-/*
-cCircle
-圆元素继承自cBaseUI
-*/
-class cCircle:public cBaseUI
-
-/*
-cLine
-直线元素继承自cBaseUI
-*/
-class cLine:public cBaseUI
-
-/*
-cMyTimer
-定时器类
-*/
-class cMyTimer
-
-/*
-cPicture
-图片元素继承自cBaseUI
-*/
-class cPicture:public cBaseUI
-
-/*
-Polygon
-对边形元素继承自cBaseU
-根据多边形基点循序依次连接形成多边形
-*/
-class cPolygon:public cBaseUI
-
-/*
-cRectangle
-矩形元素继承自cBaseU
-*/
-class cRectangle:public cBaseUI
-
-/*
-cText
-文本元素继承自cBaseU
-*/
-class cText:public cBaseUI
-
-/*
-cTriangle
-三角形元素继承自cBaseU
-*/
-class cTriangle:public cBaseUI
-
-/*
-*class cResourcePool
-*资源池，用于统一存放并管理GDI资源句柄，节省内存提升效率
-*/
-class cResourcePool
-
-/*
-*class CLock
-*互斥锁
-*/
-class CLock
-
-
-/*
-*class cSight
-*视野，管理一个视野（即当前所能看到的所有事物）的内容
-*/
-class cSight:public cBaseUI,cMyTimer
-
-```
 ### 使用示例
 ```
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
@@ -164,3 +74,27 @@ class Test
 ### 2017/8/20 16：41第三次更新
 
 此次更新主要重写了cMyTimer定时器类，修复了多线程下的资源共享问题；同时对cCircle圆类进行了一些细微的调整
+
+### 2017/8/23  21：30第三次大更
+此次更新后引擎将不再依赖与vs创建的win32项目模板而是由引擎自己创建并销毁窗口。
+### 更新后代码示例
+```
+#include<cGameEngine.h>
+using namespace MyEngine;
+#pragma comment(lib,"UIEngine.lib")
+
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+                     _In_opt_ HINSTANCE hPrevInstance,
+                     _In_ LPWSTR    lpCmdLine,
+                     _In_ int       nCmdShow)
+{
+	cGameEngine::GetEngine()->init(hInstance);  //初始化引擎
+	cGameEngine::GetEngine()->CreateText(L"文本", 100, 200);   //直接创建
+	cGameEngine::GetEngine()->CreateRectangle(POINT{ 300,20 }, 100, 50);   //直接创建
+	cCircle* pCir = new cCircle(POINT{ 200,400 }, 30);
+	cGameEngine::GetEngine()->AddEngineUi(pCir);  //手动添加
+	return cGameEngine::GetEngine()->LuanchEngine();  //运行启动引擎
+}
+```
+### 代码效果图
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0823/213934_cf51df67_1296205.jpeg "9.JPG")
